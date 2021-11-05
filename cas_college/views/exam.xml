@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="exam_tree" model="ir.ui.view">
+        <field name="name">college.exam.tree</field>
+        <field name="model">college.exam</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="class_id"/>
+                <field name="semester_id"/>
+                <field name="course_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="exam_form" model="ir.ui.view">
+        <field name="name">college.exam.form</field>
+        <field name="model">college.exam</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"
+                           options="{'clickable':'1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_valuation" type="object"
+                                class="oe_stat_button" icon="fa-calendar"
+                                attrs="{'invisible': [
+                                ('state', '!=', 'completed')]}">
+                            <div class="o_stat_info">
+                                <field name="valuation_count"
+                                       class="o_stat_value"/>
+                                <span class="o_stat_text">Valuation</span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" readonly='1' force_save='1'/>
+                            <field name="type"/>
+                            <field name="class_id" options="{'no_create':True,
+                                   'no_open':True}"/>
+                            <field name="semester_id"/>
+                        </group>
+                        <group>
+                            <field name="course_id"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Papers">
+                            <field name="paper_line_ids">
+                                <tree>
+                                    <field name="subject"/>
+                                    <field name="pass_mark"/>
+                                    <field name="max_mark"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="subject"/>
+                                        <field name="pass_mark"/>
+                                        <field name="max_mark"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="exam_action" model="ir.actions.act_window">
+        <field name="name">Exams</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">college.exam</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First Exam!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="college_exam_root"
+              name="Exams"
+              parent="college_root"
+              action="exam_action"
+              sequence="10"/>
+
+</odoo>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="student_tree" model="ir.ui.view">
+        <field name="name">college.student.tree</field>
+        <field name="model">college.student</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="adm_no"/>
+                <field name="adm_date"/>
+                <field name="name"/>
+                <field name="last_name"/>
+                <field name="father_name"/>
+                <field name="mother_name"/>
+                <field name="com_address"/>
+                <field name="phone_no"/>
+                <field name="email"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="student_form" model="ir.ui.view">
+        <field name="name">college.student.form</field>
+        <field name="model">college.student</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="adm_no"/>
+                            <field name="adm_date"/>
+                            <field name="name"/>
+                            <field name="last_name"/>
+                            <field name="phone_no"/>
+                            <field name="email"/>
+                            <field name="age"/>
+                            <field name="gender"/>
+                            <field name="com_address"/>
+                            <field name="same_com_address"/>
+                            <field name="per_address" attrs="{'invisible':[
+                                ('same_com_address','!=',False)]}"/>
+                        </group>
+                        <group>
+                            <field name="father_name"/>
+                            <field name="mother_name"/>
+                            <field name="academic_year"/>
+                            <field name="course"/>
+                            <field name="semester"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="student_action" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">college.student</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First Student!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="college_root"
+              name="College"
+              sequence="10"/>
+
+    <menuitem id="college_student_root"
+              name="Students"
+              parent="college_root"
+              action="student_action"
+              sequence="10"/>
+
+    <!--    <menuitem id="college_student"-->
+    <!--              name="Students"-->
+    <!--              parent="college_student_root"-->
+    <!--              action="student_action"-->
+    <!--              sequence="10"/>-->
+
+</odoo>

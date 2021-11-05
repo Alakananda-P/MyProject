@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <data noupdate="1">
+        <!--Email template for Rejection -->
+        <record id="admission_reject_email_template" model="mail.template">
+            <field name="name">Admission Application Rejected: Send by email
+            </field>
+            <field name="model_id" ref="cas_college.model_college_admission"/>
+            <field name="email_from">
+                ${object.company_id.email}
+            </field>
+            <field name="email_to">${object.email}</field>
+            <field name="subject">Admission(Ref ${object.name}) Rejected</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear
+                        <strong>${object.first_name}</strong>
+                        <br/>
+                        <br/>
+                        We regret to inform you that you
+                        (<strong>${object.first_name}</strong>) are not selected
+                        for admission (<strong>${object.name}</strong>).
+                        We have limited number of seats for the
+                        ongoing session, as we get a lot of applications our
+                        management has to select specific number of students.
+                    </p>
+                </div>
+            </field>
+            <!--            <field name="auto_delete" eval="True"/>-->
+        </record>
+    </data>
+</odoo>

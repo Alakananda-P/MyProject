@@ -1,0 +1,10 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_college_student","access.college.student","model_college_student",,1,1,1,1
+"access_college_admission","access.college.admission","model_college_admission",,1,1,1,1
+"access_college_course","access.college.course","model_college_course",,1,1,1,1
+"access_college_semester","access.college.semester","model_college_semester",,1,1,1,1
+"access_semester_syllabus_lines","access.semester.syllabus.lines","model_semester_syllabus_lines",,1,1,1,1
+"access_college_exam","access.college.exam","model_college_exam",,1,1,1,1
+"access_college_student_class","access.college.student.class","model_college_student_class",,1,1,1,1
+"access_class_students_lines","access.class.students.lines","model_class_students_lines",,1,1,1,1
+"access_exam_paper_lines","access.exam.paper.lines","model_exam_paper_lines",,1,1,1,1

@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <data noupdate="1">
+        <!--Email template for Admission-->
+        <record id="admission_application_email_template" model="mail.template">
+            <field name="name">Admission Application: Send by email</field>
+            <field name="model_id" ref="cas_college.model_college_admission"/>
+            <field name="email_from">
+                ${object.company_id.email}
+            </field>
+            <field name="email_to">${object.email}</field>
+            <field name="subject">Admission(Ref ${object.name}) Application
+            </field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear
+                        <strong>${object.first_name}</strong>
+                        <br/>
+                        <br/>
+                        Thank you (<strong>${object.first_name}</strong>) for
+                        submitting your application to the admission
+                        (<strong>${object.name}</strong>). We are inform you
+                        that you are selected for admission. Please Join in
+                        (<strong>${object.name}</strong>).
+                        <br></br>
+                        Admission No: (<strong>${object.name}</strong>)
+                    </p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

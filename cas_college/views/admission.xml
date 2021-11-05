@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="admission_tree" model="ir.ui.view">
+        <field name="name">college.admission.tree</field>
+        <field name="model">college.admission</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="father_name"/>
+                <field name="mother_name"/>
+                <field name="com_address"/>
+                <field name="phone_no"/>
+                <field name="email"/>
+                <field name="course_id"/>
+                <field name="date_app"/>
+                <field name="academic_year"/>
+                <field name="prev_edu_qualification"/>
+                <field name="edu_institute"/>
+                <field name="tran_certificate"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="admission_form" model="ir.ui.view">
+        <field name="name">college.admission.form</field>
+        <field name="model">college.admission</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button id="button_confirm" name="action_confirm"
+                            string="Confirm" class="btn-primary" type="object"
+                            states="draft,application"/>
+                    <button id="button_approve" name="action_approve"
+                            string="Approve" class="btn-primary" type="object"
+                            states="application"/>
+                    <button id="button_draft" name="action_draft"
+                            string="Reset To Draft" class="btn-primary"
+                            type="object" states="application"/>
+                    <button id="button_reject" name="action_reject"
+                            string="Reject" type="object" states="application"/>
+                    <field name="state" widget="statusbar"
+                           options="{'clickable':'1'}"
+                           statusbar_visible="draft,done,application,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="father_name"/>
+                            <field name="mother_name"/>
+                            <field name="com_address"/>
+                            <field name="same_com_address"/>
+                            <field name="per_address"
+                                   attrs="{'invisible':[
+                                   ('same_com_address','!=',False)]}"/>
+                            <field name="phone_no"/>
+                            <field name="email"/>
+                        </group>
+                        <group>
+                            <field name="course_id"
+                                   options="{'no_create':True,
+                                   'no_open':True}"/>
+                            <field name="date_app"/>
+                            <field name="academic_year"/>
+                            <field name="prev_edu_qualification"/>
+                            <field name="edu_institute"/>
+                            <field name="tran_certificate"/>
+                            <field name="company_id"/>
+                            <field name="admission_date"/>
+                            <field name="semester_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="admission_action" model="ir.actions.act_window">
+        <field name="name">Admission</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">college.admission</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First Admission!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="college_admission_root"
+              name="Admission"
+              parent="college_root"
+              action="admission_action"
+              sequence="10"/>
+
+    <!--    <menuitem id="college_admission"-->
+    <!--              name="Admission"-->
+    <!--              parent="college_admission_root"-->
+    <!--              action="admission_action"-->
+    <!--              sequence="10"/>-->
+
+</odoo>
