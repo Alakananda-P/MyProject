@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="marksheet_tree" model="ir.ui.view">
+        <field name="name">college.marksheet.tree</field>
+        <field name="model">college.marksheet</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="exam"/>
+                <field name="classes"/>
+                <field name="course"/>
+                <field name="semester"/>
+                <field name="pass_fail" widget="toggle_button" domain=""/>
+                <field name="rank"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="marksheet_form" model="ir.ui.view">
+        <field name="name">college.marksheet.form</field>
+        <field name="model">college.marksheet</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="exam"/>
+                        </group>
+                        <group>
+                            <field name="classes"/>
+                            <field name="course"/>
+                            <field name="semester"/>
+                            <field name="pass_fail" widget="toggle_button"/>
+                            <field name="rank"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Marks" name="marks">
+                            <field name="mark_line_ids">
+                                <tree>
+                                    <field name="subject"/>
+                                    <field name="mark" sum="Total Mark"/>
+                                    <field name="max_mark" sum="Total MaxMark"/>
+                                    <field name="pass_mark"
+                                           sum="Total PassMark"/>
+                                    <field name="pass_fail"
+                                           widget="toggle_button"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="subject"/>
+                                        <field name="mark"/>
+                                        <field name="max_mark"/>
+                                        <field name="pass_mark"/>
+                                        <field name="pass_fail"
+                                               widget="toggle_button"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group name="note_group" col="6" class="mt-2 mt-md-0">
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                <label for="total_mark"/>
+                            </div>
+                            <field name="total_mark" nolabel="1" class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="marksheet_action" model="ir.actions.act_window">
+        <field name="name">MarkSheet</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">college.marksheet</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First MarkSheet!
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="college_marksheet"
+              name="MarkSheet"
+              parent="college_configuration_root"
+              action="marksheet_action"
+              sequence="30"/>
+
+</odoo>

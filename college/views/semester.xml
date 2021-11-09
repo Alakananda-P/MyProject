@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="semester_tree" model="ir.ui.view">
+        <field name="name">college.semester.tree</field>
+        <field name="model">college.semester</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="no_semester"/>
+                <field name="course_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="semester_form" model="ir.ui.view">
+        <field name="name">college.semester.form</field>
+        <field name="model">college.semester</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" readonly='1' force_save='1'/>
+                        <field name="no_semester"/>
+                        <field name="course_id"
+                               options="{'no_create':True, 'no_open':True}"/>
+                    </group>
+                    <notebook>
+                        <page string="Syllabus">
+                            <field name="syllabus_line_ids">
+                                <tree>
+                                    <field name="subject"/>
+                                    <field name="max_mark"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="subject"/>
+                                        <field name="max_mark"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="semester_action" model="ir.actions.act_window">
+        <field name="name">Semester</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">college.semester</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First Semester!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="college_semester"
+              name="Semester"
+              parent="college_configuration_root"
+              action="semester_action"
+              sequence="20"/>
+
+</odoo>
+

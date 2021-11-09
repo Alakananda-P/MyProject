@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Sequences for Admission -->
+        <record id="seq_college_admission" model="ir.sequence">
+            <field name="name">Admission Sequence</field>
+            <field name="code">college.admission</field>
+            <field name="prefix">CA</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

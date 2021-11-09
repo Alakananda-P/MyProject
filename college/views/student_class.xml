@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="student_class_tree" model="ir.ui.view">
+        <field name="name">college.student.class.tree</field>
+        <field name="model">college.student.class</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="semester_id"/>
+                <field name="course_id"/>
+                <field name="academic_year"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="student_class_form" model="ir.ui.view">
+        <field name="name">college.student.class.form</field>
+        <field name="model">college.student.class</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button id="button_generate" name="action_generate"
+                            string="Generate Students" class="btn-primary"
+                            type="object"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly='1' force_save='1'/>
+                            <field name="semester_id"
+                                   options="{'no_create':True,
+                                   'no_open':True}"/>
+                        </group>
+                        <group>
+                            <field name="course_id"
+                                   options="{'no_create':True,
+                                   'no_open':True}"/>
+                            <field name="academic_year"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Students">
+                            <field name="student_line_ids">
+                                <tree create="0" delete="0">
+                                    <field name="name"/>
+<!--                                    <field name="email"/>-->
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="id"/>
+                                        <field name="name"/>
+<!--                                        <field name="email"/>-->
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="student_class_action" model="ir.actions.act_window">
+        <field name="name">Class</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">college.student.class</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First Class!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="college_student_class_root"
+              name="Class"
+              parent="college_root"
+              action="student_class_action"
+              sequence="10"/>
+
+</odoo>
