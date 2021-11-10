@@ -24,58 +24,55 @@ class CollegeMarksheet(models.Model):
             total = 0
             for line in record.mark_line_ids:
                 total += line.mark
-                print(line.mark)
-                print(line.pass_fail)
-                # if len(line.pass_fail) == len(line.mark):
-                #     record['pass_fail'] = True
             record['total_mark'] = total
 
-    # @api.depends('total_mark')
-    # def _rank(self):
-    #     self.env.cr.execute("""UPDATE college.marksheet SET rank=r.rank FROM
-    #     (SELECT name, course, semester, exam, total_mark,
-    #     DENSE_RANK() OVER(
-    #     ORDER BY total_mark DESC)rank FROM
-    #     college.marksheet ORDER BY rank)r WHERE pass_fail = TRUE;""")
-    #     self.env.cr.fetchall()
+    @api.onchange('mark_line_ids', 'mark_line_ids.mark')
+    def _pass_fail(self):
+        check = self.mark_line_ids
+        flag = 1
+        for record in check:
+            if not record.pass_fail:
+                flag = 0
+                print(flag)
+        if flag == 0:
+            self.pass_fail = False
+            print(self.pass_fail)
+        else:
+            self.pass_fail = True
+            print(self.pass_fail)
 
-    # @api.onchange('mark_line_ids')
-    # def _onchange_pass_fail(self):
-        # check = self.mark_line_ids
-        # for record in check:
-        #     print(record.pass_fail)
-        #     if not record.pass_fail:
-        #         self.pass_fail = False
-        #         print(self.pass_fail)
-        #     elif record.pass_fail:
-        #         self.pass_fail = True
-        #         print(self.pass_fail)
-
-        # marks = self.mark_line_ids
-        # for record in marks:
-        #     student = self.name
-        #     subject = record.subject
-        #     mark = record.mark
-        #     print(self.name, record.subject, record.mark)
-        #     print(student, subject, mark)
-        #     print(sum(int(mark)))
-            # vals = {
-            #     student: self.name,
-            #     subject: record.subject,
-            #     mark: record.mark
-            # }
-            # rank={}
-            # print("hi", vals)
-            # for key, value in vals.items():
-            #     smark = sum(vals[key]["mark"])
-            #     vals[key].update({"total":smark})
-            # s = sorted(vals, key = lambda  x:student[x]["total"], reverse=True)
-            # rank=1
-            # for key in s:
-            #     vals[key].update({"rank":rank})
-            #     rank += 1
-            # for i in vals.items():
-            #     print(i)
+    @api.onchange('mark_line_ids')
+    def _rank(self):
+        student = self.search([
+            ('course', '=', self.course),
+            ('semester', '=', self.semester),
+            ('exam', '=', self.exam)
+        ])
+        print(student)
+        ranks = {}
+        values = []
+        for rec in student:
+            vals = {
+                'id': rec.id,
+                'name': rec.name,
+                'total_mark': rec.total_mark
+            }
+            print("hi", vals)
+            values.append(vals)
+        print(values)
+        s = sorted(values, key=lambda x: x['total_mark'], reverse=True)
+        print(s)
+        rank = 1
+        for key in s:
+            # print(key)
+            # ranks = rank
+            # print(ranks)
+            key.update({'ranks': rank})
+            # print('hi', vals)
+            print(key)
+            rec.rank = key.get('ranks')
+            print(rec.rank)
+            rank += 1
 
 
 class MarksheetMarksLines(models.Model):
@@ -93,19 +90,5 @@ class MarksheetMarksLines(models.Model):
     def _onchange_mark(self):
         if self.mark >= self.pass_mark:
             self.pass_fail = True
-
-    # @api.depends('mark')
-    # def _subtotal_mark(self):
-    #     # for order in self:
-    #     #     print(order)
-    #     self.subtotal_mark = self.mark
-            # print(order.mark_subtotal)
-
-    # def _compute_amount_undiscounted(self):
-    #     for order in self:
-    #         total = 0.0
-    #         for line in order.order_line:
-    #             total += line.price_subtotal + line.price_unit * ((line.discount or 0.0) / 100.0) * line.product_uom_qty  # why is there a discount in a field named amount_undiscounted ??
-    #         order.amount_undiscounted = total
-
-
+        else:
+            self.pass_fail = False
