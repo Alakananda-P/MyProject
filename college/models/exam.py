@@ -35,51 +35,23 @@ class CollegeExam(models.Model):
     def _onchange_type_semester_course(self):
         self.name = str(self.type) + ': ' + str(
             self.semester_id.name) + ' ' + str(self.course_id.name)
-        # Generate Paper in Paper Line Based on a Field
+        # Generate Paper Line Based on a Field
         if self.type == 'semester':
-            print(self.semester_id)
             semester = self.semester_id.syllabus_line_ids
-            print(semester)
             values = [(5, 0, 0)]
-            # print(values)
             for record in semester:
                 vals = {
                     'subject': record.subject,
                     'max_mark': record.max_mark
                 }
-                print("hi", vals)
                 values.append((0, 0, vals))
                 self.paper_line_ids = values
 
     # State is Changed Based on End Date
     def test_cron_job(self):
         for record in self.search([('state', '!=', 'completed')]):
-            print(record)
             if record.end_date and record.end_date == fields.Date.today():
-                print(record)
                 record.write({'state': 'completed'})
-
-    @api.model
-    def _compute_rank(self, line):
-        return {
-
-        }
-
-    # @api.onchange('start_date')
-    # def _rank(self):
-    #     values = [(5, 0, 0)]
-    #     student = self.env['college.marksheet'].search([
-    #         'exam', '=', self.name,
-    #         'course', '=', self.course_id,
-    #         'semester', '=', self.semester_id
-    #     ])
-    #     for record in student:
-    #         vals = {
-    #             'name': record.name,
-    #             'total_mark': record.total_mark
-    #         }
-    #         print("hi", vals)
-    #         values.append((0, 0, vals))
 
     @api.model
     def _compute_line_data(self, line):
@@ -98,7 +70,7 @@ class CollegeExam(models.Model):
 
     def action_generate(self):
         self.valuation_count = len(self.class_id.student_line_ids)
-        # Marksheet
+        # Generate MarkSheet Line
         data = self.data_line()
         student = self.class_id.student_line_ids
         values = [(5, 0, 0)]
@@ -110,7 +82,6 @@ class CollegeExam(models.Model):
                 'course': self.class_id.course_id.name,
                 'semester': self.class_id.semester_id.name,
                 'mark_line_ids': data,
-                # 'pass_fail': self.paper_line_ids.pass_mark
             }
             print("hi", vals)
             values.append((0, 0, vals))
@@ -122,6 +93,7 @@ class CollegeExam(models.Model):
         #     'mark_line_ids': data
         # })
 
+    # Valuation Smart Button
     def action_open_valuation(self):
         return {
             'type': 'ir.actions.act_window',
@@ -141,6 +113,3 @@ class ExamPaperLines(models.Model):
     pass_mark = fields.Float(string='Pass Mark')
     max_mark = fields.Float(string='Maximum Marks')
     exam_id = fields.Many2one('college.exam', string='Exam')
-    # mark_id = fields.Many2one('college.marksheet', string='Name')
-# self.rank = vals.get('ranks')
-# vals.update({'ranks': rank})

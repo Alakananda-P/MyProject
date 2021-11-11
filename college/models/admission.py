@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
-from odoo.exceptions import Warning
+from odoo.exceptions import UserError
 from datetime import datetime
 
 
@@ -52,7 +52,7 @@ class CollegeAdmission(models.Model):
             self.state = 'application'
             # Set Warning
             if self.tran_certificate == 0:
-                raise Warning("Please Add Attachment")
+                raise UserError("Please Add Attachment")
         # State Check & Move
         elif self.state == 'application':
             self.state = 'done'

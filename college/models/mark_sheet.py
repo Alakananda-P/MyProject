@@ -18,6 +18,7 @@ class CollegeMarksheet(models.Model):
                                     'mark_id', string='Marks')
     total_mark = fields.Float(string='Total Mark', compute='_total_mark')
 
+    # Calculate Total Mark
     @api.depends('mark_line_ids', 'mark_line_ids.mark')
     def _total_mark(self):
         for record in self:
@@ -27,20 +28,19 @@ class CollegeMarksheet(models.Model):
             record['total_mark'] = total
 
     @api.onchange('mark_line_ids', 'mark_line_ids.mark')
+    # Check Pass or Fail
     def _pass_fail(self):
         check = self.mark_line_ids
         flag = 1
         for record in check:
             if not record.pass_fail:
                 flag = 0
-                print(flag)
         if flag == 0:
             self.pass_fail = False
-            print(self.pass_fail)
         else:
             self.pass_fail = True
-            print(self.pass_fail)
 
+    # Set Rank
     @api.onchange('mark_line_ids')
     def _rank(self):
         student = self.search([
@@ -48,8 +48,6 @@ class CollegeMarksheet(models.Model):
             ('semester', '=', self.semester),
             ('exam', '=', self.exam)
         ])
-        print(student)
-        ranks = {}
         values = []
         for rec in student:
             vals = {
@@ -57,21 +55,13 @@ class CollegeMarksheet(models.Model):
                 'name': rec.name,
                 'total_mark': rec.total_mark
             }
-            print("hi", vals)
             values.append(vals)
-        print(values)
-        s = sorted(values, key=lambda x: x['total_mark'], reverse=True)
-        print(s)
+        sort_mark = sorted(values, key=lambda x: x['total_mark'], reverse=True)
         rank = 1
-        for key in s:
-            # print(key)
-            # ranks = rank
-            # print(ranks)
+        for key in sort_mark:
             key.update({'ranks': rank})
-            # print('hi', vals)
-            print(key)
-            rec.rank = key.get('ranks')
-            print(rec.rank)
+            search_id = self.search([('id', '=', key.get('id'))])
+            search_id.rank = rank
             rank += 1
 
 
@@ -86,6 +76,7 @@ class MarksheetMarksLines(models.Model):
     pass_fail = fields.Boolean(string='Pass/Fail')
     mark_id = fields.Many2one('college.marksheet', string='Semester')
 
+    # Check Pass or Fail
     @api.onchange('mark')
     def _onchange_mark(self):
         if self.mark >= self.pass_mark:

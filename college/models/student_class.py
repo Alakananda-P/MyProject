@@ -28,16 +28,12 @@ class CollegeStudentClass(models.Model):
             ('course', '=', self.course_id.name),
             ('semester', '=', self.semester_id.name)
         ])
-        print(student)
         values = [(5, 0, 0)]
-        print(values)
         for record in student:
             vals = {
                 'name': record.name,
-                # 'email': record.email,
                 'id': record.id
             }
-            print("hi", vals)
             values.append((0, 0, vals))
             self.student_line_ids = values
 
@@ -47,6 +43,5 @@ class ClassStudentsLines(models.Model):
     _description = "Class Students Lines"
 
     name = fields.Char(string='Student')
-    # email = fields.Char(string='Email')
     id = fields.Integer(string='Id')
     class_id = fields.Many2one('college.student.class', string='Class')
