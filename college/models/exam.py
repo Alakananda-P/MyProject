@@ -105,7 +105,7 @@ class CollegeExam(models.Model):
         }
 
     def action_valuation(self):
-        print('Hi')
+        print('Hello')
 
 
 class ExamPaperLines(models.Model):
