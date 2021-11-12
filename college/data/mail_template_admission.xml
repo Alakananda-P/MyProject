@@ -24,7 +24,7 @@
                         (<strong>${object.name}</strong>). We are inform you
                         that you are selected for admission. Please Join in
                         (<strong>${object.name}</strong>).
-                        <br></br>
+                        <br/>
                         Admission No: (<strong>${object.name}</strong>)
                     </p>
                 </div>

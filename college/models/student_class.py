@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
+from datetime import datetime
 
 
 class CollegeStudentClass(models.Model):
@@ -9,11 +10,13 @@ class CollegeStudentClass(models.Model):
     name = fields.Char(string='Name')
     semester_id = fields.Many2one('college.semester', string='Semester',
                                   required=True)
-    course_id = fields.Many2one('college.course', string='Course',
-                                required=True)
-    academic_year = fields.Integer(string='Academic Year', required=True)
+    course_id = fields.Many2one(related='semester_id.course_id',
+                                string='Course', required=True)
+    academic_year = fields.Date(string='Academic Year', required=True)
     student_line_ids = fields.One2many('class.students.lines',
                                        'class_id', string='Students')
+    next_class = fields.Char(string='Next Class')
+    sem_no = fields.Integer(string='Number Semester')
 
     # Name Format
     @api.onchange('semester_id', 'academic_year')
@@ -36,6 +39,45 @@ class CollegeStudentClass(models.Model):
             }
             values.append((0, 0, vals))
             self.student_line_ids = values
+
+    @api.onchange('name')
+    def _next_class(self):
+        no_semester = self.semester_id.no_semester
+        self.sem_no = no_semester + 1
+        no = self.env['college.semester'].search([
+            ('no_semester', '=', self.sem_no)
+        ])
+        vals = {}
+        for record in no:
+            vals = {
+                'next_class': record.name,
+            }
+        sem = vals.get('next_class')
+        if self.academic_year != 0:
+            academic_month = datetime.strptime(str(self.academic_year),
+                                               '%Y-%m-%d').strftime('%m')
+            academic_year = datetime.strptime(str(self.academic_year),
+                                              '%Y-%m-%d').year
+            date = int(academic_month) + 6
+            if date > 12:
+                year = academic_year + 1
+                difference = date - 12
+                month = 0
+                months = month + difference
+                if months < 10:
+                    zero_filled_months = str(months).zfill(2)
+                    self.next_class = sem + ' ' + str(year) + '-' + str(
+                        zero_filled_months)
+                else:
+                    self.next_class = sem + ' ' + str(year) + '-' + str(months)
+            else:
+                if date < 10:
+                    zero_filled_months = str(date).zfill(2)
+                    self.next_class = sem + ' ' + str(
+                        academic_year) + '-' + str(zero_filled_months)
+                else:
+                    self.next_class = sem + ' ' + str(
+                        academic_year) + '-' + str(date)
 
 
 class ClassStudentsLines(models.Model):

@@ -27,6 +27,9 @@
                     <button id="button_generate" name="action_generate"
                             string="Generate MarkSheets" class="btn-primary"
                             type="object" states="completed"/>
+                    <button id="button_valuation" name="action_valuation"
+                            string="Valuation Completed" class="btn-primary"
+                            type="object" states="completed"/>
                     <field name="state" widget="statusbar"
                            options="{'clickable':'1'}"/>
                 </header>
@@ -66,9 +69,9 @@
                                 </tree>
                                 <form>
                                     <group>
-                                        <field name="subject"/>
+                                        <field name="subject" readonly='1' force_save='1'/>
                                         <field name="pass_mark"/>
-                                        <field name="max_mark"/>
+                                        <field name="max_mark" readonly='1' force_save='1'/>
                                     </group>
                                 </form>
                             </field>

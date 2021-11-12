@@ -104,6 +104,9 @@ class CollegeExam(models.Model):
             'target': 'current',
         }
 
+    def action_valuation(self):
+        print('Hi')
+
 
 class ExamPaperLines(models.Model):
     _name = "exam.paper.lines"
