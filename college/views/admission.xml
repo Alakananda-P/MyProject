@@ -42,6 +42,9 @@
                             type="object" states="application"/>
                     <button id="button_reject" name="action_reject"
                             string="Reject" type="object" states="application"/>
+                    <button id="button_payment" name="action_payment"
+                            string="Fee Payment" class="btn-primary" type="object"
+                            states="draft,approved"/>
                     <field name="state" widget="statusbar"
                            options="{'clickable':'1'}"
                            statusbar_visible="draft,done,application,approved"/>

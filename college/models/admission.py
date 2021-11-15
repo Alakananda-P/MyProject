@@ -95,3 +95,14 @@ class CollegeAdmission(models.Model):
         # Send Email for Rejection
         self.env.ref('college.admission_reject_email_template').send_mail(
             self.id, force_send=True)
+
+    def action_payment(self):
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': 1,
+            'invoice_date': datetime.today(),
+            'state': 'draft',
+            'invoice_line_ids': [
+                (0, 0, {'name': self.first_name, 'price_unit': 500.0})],
+        })
+

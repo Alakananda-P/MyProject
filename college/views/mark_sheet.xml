@@ -25,16 +25,16 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="name" readonly='1' force_save='1'/>
-                            <field name="exam" readonly='1' force_save='1'/>
+                            <field name="name" attrs="{'readonly': [('check_valuation_completed', '!=', False)]}"/>
+                            <field name="exam" attrs="{'readonly': [('check_valuation_completed', '!=', False)]}"/>
                         </group>
                         <group>
-                            <field name="classes" readonly='1' force_save='1'/>
-                            <field name="course" readonly='1' force_save='1'/>
-                            <field name="semester" readonly='1' force_save='1'/>
+                            <field name="classes" attrs="{'readonly': [('check_valuation_completed', '!=', False)]}"/>
+                            <field name="course" attrs="{'readonly': [('check_valuation_completed', '!=', False)]}"/>
+                            <field name="semester" attrs="{'readonly': [('check_valuation_completed', '!=', False)]}"/>
                             <field name="pass_fail" widget="toggle_button"/>
-                            <field name="rank"/>
-
+                            <field name="rank" attrs="{'readonly': [('check_valuation_completed', '!=', False)]}"/>
+                            <field name="check_valuation_completed"/>
                         </group>
                     </group>
                     <notebook>
@@ -51,12 +51,13 @@
                                 </tree>
                                 <form>
                                     <group>
-                                        <field name="subject" readonly='1' force_save='1'/>
-                                        <field name="mark"/>
-                                        <field name="max_mark" readonly='1' force_save='1'/>
-                                        <field name="pass_mark" readonly='1' force_save='1'/>
+                                        <field name="subject" attrs="{'readonly': [('check_valuation_complete', '!=', False)]}"/>
+                                        <field name="mark" attrs="{'readonly': [('check_valuation_complete', '!=', False)]}"/>
+                                        <field name="max_mark" attrs="{'readonly': [('check_valuation_complete', '!=', False)]}"/>
+                                        <field name="pass_mark" attrs="{'readonly': [('check_valuation_complete', '!=', False)]}"/>
                                         <field name="pass_fail"
                                                widget="toggle_button"/>
+                                        <field name="check_valuation_complete"/>
                                     </group>
                                 </form>
                             </field>

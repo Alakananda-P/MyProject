@@ -17,6 +17,7 @@ class CollegeMarksheet(models.Model):
     mark_line_ids = fields.One2many('marksheet.marks.lines',
                                     'mark_id', string='Marks')
     total_mark = fields.Float(string='Total Mark', compute='_total_mark')
+    check_valuation_completed = fields.Boolean(string='Valuation Completed or Not')
 
     # Calculate Total Mark
     @api.depends('mark_line_ids', 'mark_line_ids.mark')
@@ -75,6 +76,8 @@ class MarksheetMarksLines(models.Model):
     pass_mark = fields.Float(string='Pass Mark')
     pass_fail = fields.Boolean(string='Pass/Fail')
     mark_id = fields.Many2one('college.marksheet', string='Semester')
+    check_valuation_complete = fields.Boolean(
+        related='mark_id.check_valuation_completed')
 
     # Check Pass or Fail
     @api.onchange('mark')

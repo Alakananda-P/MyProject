@@ -27,3 +27,4 @@ class CollegeStudent(models.Model):
     course = fields.Char(string='Course')
     semester = fields.Char(string='Semester')
     classes = fields.Char(string='Class')
+    next_class = fields.Char(string='Next Class')

@@ -29,6 +29,7 @@ class CollegeExam(models.Model):
     valuation_count = fields.Integer(string='Valuation Count')
     marksheet_ids = fields.Many2many('college.marksheet', 'marksheet_id',
                                      string='Student Name')
+    valuation_completed = fields.Boolean(string='Valuation Completed')
 
     # Name Format
     @api.onchange('type', 'semester_id', 'course_id')
@@ -52,6 +53,53 @@ class CollegeExam(models.Model):
         for record in self.search([('state', '!=', 'completed')]):
             if record.end_date and record.end_date == fields.Date.today():
                 record.write({'state': 'completed'})
+
+    def action_valuation_completed(self):
+        self.valuation_completed = True
+        # values = [(5, 0, 0)]
+        student = self.env['college.marksheet'].search([])
+        for record in student:
+            vals = {
+                'check_valuation_completed': record.check_valuation_completed,
+            }
+            vals.update({'check_valuation_completed': self.valuation_completed})
+            student.write(vals)
+        next_class_id = self.class_id.next_class.name
+        pass_stud = self.env['college.marksheet'].search([
+            ('pass_fail', '=', True),
+        ])
+        for record in pass_stud:
+            pass_stud_name = {
+                'name': record.name
+            }
+            print(pass_stud_name)
+            student_name = self.env['college.student'].search([
+                ('name', '=', pass_stud_name.get('name'))
+            ])
+            print(student_name)
+            next_class = {
+                'next_class': next_class_id,
+            }
+            print(next_class)
+            student_name.write(next_class)
+        fail_stud = self.env['college.marksheet'].search([
+            ('pass_fail', '=', False),
+        ])
+        same_class_id = self.class_id.name
+        for record in fail_stud:
+            fail_stud_name = {
+                'name': record.name
+            }
+            print(fail_stud_name)
+            student_name = self.env['college.student'].search([
+                ('name', '=', fail_stud_name.get('name'))
+            ])
+            print(student_name)
+            same_class = {
+                'next_class': same_class_id,
+            }
+            print(same_class)
+            student_name.write(same_class)
 
     @api.model
     def _compute_line_data(self, line):
@@ -103,9 +151,6 @@ class CollegeExam(models.Model):
             'view_mode': 'tree,form',
             'target': 'current',
         }
-
-    def action_valuation(self):
-        print('Hello')
 
 
 class ExamPaperLines(models.Model):

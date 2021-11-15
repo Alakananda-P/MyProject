@@ -15,7 +15,8 @@ class CollegeStudentClass(models.Model):
     academic_year = fields.Date(string='Academic Year', required=True)
     student_line_ids = fields.One2many('class.students.lines',
                                        'class_id', string='Students')
-    next_class = fields.Char(string='Next Class')
+    next_class = fields.Many2one('college.student.class', string='Next Class')
+    # next_class = fields.Char(string='Next Class')
     sem_no = fields.Integer(string='Number Semester')
 
     # Name Format
@@ -40,44 +41,44 @@ class CollegeStudentClass(models.Model):
             values.append((0, 0, vals))
             self.student_line_ids = values
 
-    @api.onchange('name')
-    def _next_class(self):
-        no_semester = self.semester_id.no_semester
-        self.sem_no = no_semester + 1
-        no = self.env['college.semester'].search([
-            ('no_semester', '=', self.sem_no)
-        ])
-        vals = {}
-        for record in no:
-            vals = {
-                'next_class': record.name,
-            }
-        sem = vals.get('next_class')
-        if self.academic_year != 0:
-            academic_month = datetime.strptime(str(self.academic_year),
-                                               '%Y-%m-%d').strftime('%m')
-            academic_year = datetime.strptime(str(self.academic_year),
-                                              '%Y-%m-%d').year
-            date = int(academic_month) + 6
-            if date > 12:
-                year = academic_year + 1
-                difference = date - 12
-                month = 0
-                months = month + difference
-                if months < 10:
-                    zero_filled_months = str(months).zfill(2)
-                    self.next_class = sem + ' ' + str(year) + '-' + str(
-                        zero_filled_months)
-                else:
-                    self.next_class = sem + ' ' + str(year) + '-' + str(months)
-            else:
-                if date < 10:
-                    zero_filled_months = str(date).zfill(2)
-                    self.next_class = sem + ' ' + str(
-                        academic_year) + '-' + str(zero_filled_months)
-                else:
-                    self.next_class = sem + ' ' + str(
-                        academic_year) + '-' + str(date)
+    # @api.onchange('name')
+    # def _next_class(self):
+    #     no_semester = self.semester_id.no_semester
+    #     self.sem_no = no_semester + 1
+    #     no = self.env['college.semester'].search([
+    #         ('no_semester', '=', self.sem_no)
+    #     ])
+    #     vals = {}
+    #     for record in no:
+    #         vals = {
+    #             'next_class': record.name,
+    #         }
+    #     sem = vals.get('next_class')
+    #     if self.academic_year != 0:
+    #         academic_month = datetime.strptime(str(self.academic_year),
+    #                                            '%Y-%m-%d').strftime('%m')
+    #         academic_year = datetime.strptime(str(self.academic_year),
+    #                                           '%Y-%m-%d').year
+    #         date = int(academic_month) + 6
+    #         if date > 12:
+    #             year = academic_year + 1
+    #             difference = date - 12
+    #             month = 0
+    #             months = month + difference
+    #             if months < 10:
+    #                 zero_filled_months = str(months).zfill(2)
+    #                 self.next_class = sem + ' ' + str(year) + '-' + str(
+    #                     zero_filled_months)
+    #             else:
+    #                 self.next_class = sem + ' ' + str(year) + '-' + str(months)
+    #         else:
+    #             if date < 10:
+    #                 zero_filled_months = str(date).zfill(2)
+    #                 self.next_class = sem + ' ' + str(
+    #                     academic_year) + '-' + str(zero_filled_months)
+    #             else:
+    #                 self.next_class = sem + ' ' + str(
+    #                     academic_year) + '-' + str(date)
 
 
 class ClassStudentsLines(models.Model):
