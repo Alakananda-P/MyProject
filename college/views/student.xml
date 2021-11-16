@@ -48,6 +48,7 @@
                             <field name="semester"/>
                             <field name="classes"/>
                             <field name="next_class"/>
+                            <field name="partner"/>
                         </group>
                     </group>
                 </sheet>

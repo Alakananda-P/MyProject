@@ -6,7 +6,6 @@
         <field name="model">college.admission</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
                 <field name="first_name"/>
                 <field name="last_name"/>
                 <field name="father_name"/>
@@ -44,17 +43,31 @@
                             string="Reject" type="object" states="application"/>
                     <button id="button_payment" name="action_payment"
                             string="Fee Payment" class="btn-primary" type="object"
-                            states="draft,approved"/>
+                            states="done,approved"/>
                     <field name="state" widget="statusbar"
                            options="{'clickable':'1'}"
                            statusbar_visible="draft,done,application,approved"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="name" readonly="1"/>
-                        </h1>
-                    </div>
+<!--                    <div class="oe_title">-->
+<!--                        <h1>-->
+<!--                            <field name="adm_no" readonly="1"/>-->
+<!--                        </h1>-->
+<!--                    </div>-->
+<!--                    <button name="action_register_payment"-->
+<!--                            id="account_invoice_payment_btn" type="object"-->
+<!--                            class="oe_highlight" attrs="{'invisible':-->
+<!--                            ['|', '|', ('state', '!=', 'posted'),-->
+<!--                            ('payment_state', 'not in', ('not_paid', 'partial')),-->
+<!--                            ('move_type', 'not in', ('out_invoice', 'out_refund',-->
+<!--                            'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"-->
+<!--                            context="{'dont_redirect_to_payments': True}"-->
+<!--                            string="Register Payment" groups="account.group_account_invoice"/>-->
+<!--                    <widget name="web_ribbon" title="Paid" attrs="{'invisible': ['|',-->
+<!--                    ('payment_state', '!=', 'paid'), ('move_type', 'not in',-->
+<!--                    ('out_invoice', 'out_refund', 'in_invoice', 'in_refund',-->
+<!--                    'out_receipt', 'in_receipt'))]}"/>-->
+<!--                    <widget name="web_ribbon" title="Paid" attrs="{'invisible': [('state', '!=', 'done')]}"/>-->
                     <group>
                         <group>
                             <field name="first_name"/>
@@ -82,6 +95,7 @@
                             <field name="admission_date"/>
                             <field name="semester_id"/>
                             <field name="class_id"/>
+                            <field name="partner_id"/>
                         </group>
                     </group>
                 </sheet>

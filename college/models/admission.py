@@ -7,11 +7,12 @@ from datetime import datetime
 class CollegeAdmission(models.Model):
     _name = "college.admission"
     _description = "College Admission"
+    _rec_name = "first_name"
 
     first_name = fields.Char(string='First Name', required=True)
     last_name = fields.Char(string='Last name')
-    name = fields.Char(string="Admission No", required=True, copy=False,
-                       readonly=True, default=lambda self: 'New')
+    adm_no = fields.Char(string="Admission No", required=True, copy=False,
+                         readonly=True, default=lambda self: 'New')
     father_name = fields.Char(string='Father Name')
     mother_name = fields.Char(string='Mother Name')
     com_address = fields.Text(string='Communication Address')
@@ -44,6 +45,9 @@ class CollegeAdmission(models.Model):
                                   required=True)
     class_id = fields.Many2one('college.student.class', string='Class',
                                required=True)
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True)
+    invoice_id = fields.Integer(string='Invoice Id')
+    paid_not = fields.Boolean(string='Paid or Not')
 
     @api.depends('tran_certificate')
     def action_confirm(self):
@@ -57,13 +61,13 @@ class CollegeAdmission(models.Model):
         elif self.state == 'application':
             self.state = 'done'
             # Sequence
-            self.name = self.env['ir.sequence'].next_by_code(
+            self.adm_no = self.env['ir.sequence'].next_by_code(
                 'college.admission') or 'New'
             # Current Date
             self.admission_date = datetime.today()
             # Create Record in Student Model
             vals = {
-                'adm_no': self.name,
+                'adm_no': self.adm_no,
                 'adm_date': self.admission_date,
                 'name': self.first_name,
                 'last_name': self.last_name,
@@ -77,7 +81,8 @@ class CollegeAdmission(models.Model):
                 'academic_year': self.academic_year,
                 'course': self.course_id.name,
                 'semester': self.semester_id.name,
-                'classes': self.class_id.name
+                'classes': self.class_id.name,
+                'partner': self.partner_id.name
             }
             self.env['college.student'].create(vals)
             # Send Email for Admission
@@ -99,10 +104,31 @@ class CollegeAdmission(models.Model):
     def action_payment(self):
         invoice = self.env['account.move'].create({
             'move_type': 'out_invoice',
-            'partner_id': 1,
+            # 'id': self.id,
+            'partner_id': self.partner_id,
             'invoice_date': datetime.today(),
             'state': 'draft',
             'invoice_line_ids': [
                 (0, 0, {'name': self.first_name, 'price_unit': 500.0})],
         })
+        self.invoice_id = invoice
+        print(self.invoice_id)
 
+
+class AccountMoveInherit(models.Model):
+    _inherit = 'account.move'
+
+    @api.onchange('payment_state')
+    def action_create_payments(self):
+        print('Hello')
+        if self.payment_state == 'paid':
+            # invoice = self.env['college.admission'].search([
+            #     ('invoice_id', '=', self.id)
+            # ])
+            # vals = {
+            #     'paid_not': True,
+            # }
+            # invoice.write(vals)
+            print('Hi')
+            # result = super(AccountPaymentRegisterInherit, self).
+            # action_create_payments()
