@@ -46,8 +46,9 @@ class CollegeAdmission(models.Model):
     class_id = fields.Many2one('college.student.class', string='Class',
                                required=True)
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
-    invoice_id = fields.Integer(string='Invoice Id')
-    paid_not = fields.Boolean(string='Paid or Not')
+    invoice_id = fields.Many2one('account.move', string='Invoice Id')
+    paid_not = fields.Boolean(string='Paid or Not',
+                              compute='_compute_payment_state')
 
     @api.depends('tran_certificate')
     def action_confirm(self):
@@ -104,31 +105,28 @@ class CollegeAdmission(models.Model):
     def action_payment(self):
         invoice = self.env['account.move'].create({
             'move_type': 'out_invoice',
-            # 'id': self.id,
             'partner_id': self.partner_id,
             'invoice_date': datetime.today(),
             'state': 'draft',
             'invoice_line_ids': [
                 (0, 0, {'name': self.first_name, 'price_unit': 500.0})],
         })
+        print(invoice)
         self.invoice_id = invoice
-        print(self.invoice_id)
+        print(self.invoice_id.payment_state)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Invoices',
+            'res_model': 'account.move',
+            'domain': [('id', '=', self.invoice_id.id)],
+            'view_mode': 'tree,form',
+            'target': 'current',
+        }
 
-
-class AccountMoveInherit(models.Model):
-    _inherit = 'account.move'
-
-    @api.onchange('payment_state')
-    def action_create_payments(self):
-        print('Hello')
-        if self.payment_state == 'paid':
-            # invoice = self.env['college.admission'].search([
-            #     ('invoice_id', '=', self.id)
-            # ])
-            # vals = {
-            #     'paid_not': True,
-            # }
-            # invoice.write(vals)
-            print('Hi')
-            # result = super(AccountPaymentRegisterInherit, self).
-            # action_create_payments()
+    @api.depends('invoice_id.payment_state')
+    def _compute_payment_state(self):
+        print('Hello', self.invoice_id.payment_state)
+        if self.invoice_id.payment_state == 'paid':
+            self.paid_not = True
+        else:
+            self.paid_not = False

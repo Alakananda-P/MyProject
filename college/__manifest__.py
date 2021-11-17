@@ -22,7 +22,9 @@
         'views/semester.xml',
         'views/exam.xml',
         'views/student_class.xml',
-        'views/mark_sheet.xml'
+        'views/mark_sheet.xml',
+        'report/student_admission_template.xml',
+        'report/report.xml'
     ],
     'demo': [],
     'qweb': [],

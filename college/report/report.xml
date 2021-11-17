@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_student_admission" model="ir.actions.report">
+            <field name="name">Student Admission</field>
+            <field name="model">college.admission</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">college.report_student_admission</field>
+            <field name="report_file">college.report_student_admission</field>
+            <field name="binding_model_id" ref="model_college_admission"/>
+            <field name="binding_type">report</field>
+    </record>
+</odoo>
