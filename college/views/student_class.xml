@@ -78,4 +78,15 @@
               action="student_class_action"
               sequence="10"/>
 
+    <menuitem id="college_report_root"
+              name="Reports"
+              parent="college_root"
+              sequence="20"/>
+
+    <menuitem id="college_student_marksheet"
+              name="Student MarkSheet"
+              parent="college_report_root"
+              action="action_student_marksheet"
+              sequence="10"/>
+
 </odoo>

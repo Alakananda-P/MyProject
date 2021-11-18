@@ -12,7 +12,8 @@ class CollegeStudentClass(models.Model):
                                   required=True)
     course_id = fields.Many2one(related='semester_id.course_id',
                                 string='Course', required=True)
-    academic_year = fields.Date(string='Academic Year', required=True)
+    academic_year = fields.Selection([(str(num), str(num)) for num in range(
+        1900, (datetime.now().year)+1)], 'Academic Year', required=True)
     student_line_ids = fields.One2many('class.students.lines',
                                        'class_id', string='Students')
     next_class = fields.Many2one('college.student.class', string='Next Class')

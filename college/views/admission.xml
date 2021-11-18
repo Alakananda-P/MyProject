@@ -83,7 +83,7 @@
                             <field name="semester_id"/>
                             <field name="class_id"/>
                             <field name="partner_id"/>
-                            <field name="paid_not"/>
+                            <field name="paid_not" invisible="1"/>
                         </group>
                     </group>
                 </sheet>

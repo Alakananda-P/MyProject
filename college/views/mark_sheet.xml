@@ -34,7 +34,7 @@
                             <field name="semester" attrs="{'readonly': [('check_valuation_completed', '!=', False)]}"/>
                             <field name="pass_fail" widget="toggle_button"/>
                             <field name="rank" attrs="{'readonly': [('check_valuation_completed', '!=', False)]}"/>
-                            <field name="check_valuation_completed" />
+                            <field name="check_valuation_completed" invisible="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -57,7 +57,7 @@
                                         <field name="pass_mark" attrs="{'readonly': [('check_valuation_complete', '!=', False)]}"/>
                                         <field name="pass_fail"
                                                widget="toggle_button"/>
-                                        <field name="check_valuation_complete"/>
+                                        <field name="check_valuation_complete" invisible="1"/>
                                     </group>
                                 </form>
                             </field>

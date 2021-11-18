@@ -16,6 +16,7 @@
         'data/mail_template_reject.xml',
         'data/mail_template_admission.xml',
         'data/cron.xml',
+        'wizard/student_marksheet_view.xml',
         'views/student.xml',
         'views/admission.xml',
         'views/course.xml',
@@ -23,8 +24,8 @@
         'views/exam.xml',
         'views/student_class.xml',
         'views/mark_sheet.xml',
-        'report/student_admission_template.xml',
-        'report/report.xml'
+        # 'report/student_admission_template.xml',
+        # 'report/report.xml'
     ],
     'demo': [],
     'qweb': [],

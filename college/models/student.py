@@ -23,7 +23,7 @@ class CollegeStudent(models.Model):
         ('female', 'Female'),
         ('other', 'Other')
     ])
-    academic_year = fields.Date(string='Academic Year')
+    academic_year = fields.Char(string='Academic Year')
     course = fields.Char(string='Course')
     semester = fields.Char(string='Semester')
     classes = fields.Char(string='Class')

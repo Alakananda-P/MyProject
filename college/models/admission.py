@@ -21,7 +21,8 @@ class CollegeAdmission(models.Model):
     phone_no = fields.Char(string='Phone No')
     email = fields.Char(string='Email', required=True)
     date_app = fields.Date(string='Date of Application')
-    academic_year = fields.Date(string='Academic Year', required=True)
+    academic_year = fields.Selection([(str(num), str(num)) for num in range(
+        1900, (datetime.now().year)+1)], 'Academic Year', required=True)
     prev_edu_qualification = fields.Selection([
         ('hse', 'Higher Secondary'),
         ('ug', 'UG'),

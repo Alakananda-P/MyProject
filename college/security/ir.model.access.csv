@@ -10,3 +10,4 @@
 "access_exam_paper_lines","access.exam.paper.lines","model_exam_paper_lines",,1,1,1,1
 "access_college_marksheet","access.college.marksheet","model_college_marksheet",,1,1,1,1
 "access_marksheet_marks_lines","access.marksheet.marks.lines","model_marksheet_marks_lines",,1,1,1,1
+"access_student_marksheet_wizard","access.student.marksheet.wizard","model_student_marksheet_wizard",,1,1,1,1
