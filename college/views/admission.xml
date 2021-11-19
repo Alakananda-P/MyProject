@@ -73,6 +73,8 @@
                             <field name="course_id"
                                    options="{'no_create':True,
                                    'no_open':True}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="fee"/>
                             <field name="date_app"/>
                             <field name="academic_year"/>
                             <field name="prev_edu_qualification"/>

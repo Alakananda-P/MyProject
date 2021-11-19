@@ -31,11 +31,18 @@ class CollegeExam(models.Model):
                                      string='Student Name')
     valuation_completed = fields.Boolean(string='Valuation Completed')
 
-    # Name Format
-    @api.onchange('type', 'semester_id', 'course_id')
+    def name_get(self):
+        result = []
+        for rec in self:
+            rec.name = str(rec.type) + ': ' + str(
+                rec.semester_id.name) + ' ' + str(rec.course_id.name)
+            result.append((rec.id, rec.name))
+        return result
+
+    @api.onchange('class_id')
     def _onchange_type_semester_course(self):
-        self.name = str(self.type) + ': ' + str(
-            self.semester_id.name) + ' ' + str(self.course_id.name)
+        # self.name = str(self.type) + ': ' + str(
+        #     self.semester_id.name) + ' ' + str(self.course_id.name)
         # Generate Paper Line Based on a Field
         if self.type == 'semester':
             semester = self.semester_id.syllabus_line_ids

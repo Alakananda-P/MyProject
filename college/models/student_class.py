@@ -21,10 +21,17 @@ class CollegeStudentClass(models.Model):
     sem_no = fields.Integer(string='Number Semester')
 
     # Name Format
-    @api.onchange('semester_id', 'academic_year')
-    def class_name(self):
-        self.name = str(self.semester_id.name) + ' ' + str(
-                self.academic_year)
+    # @api.onchange('semester_id', 'academic_year')
+    # def class_name(self):
+    #     self.name = str(self.semester_id.name) + ' ' + str(
+    #             self.academic_year)
+
+    def name_get(self):
+        result = []
+        for rec in self:
+            rec.name = str(rec.semester_id.name) + ' ' + str(rec.academic_year)
+            result.append((rec.id, rec.name))
+        return result
 
     # Generate Students in Students Line
     def action_generate(self):

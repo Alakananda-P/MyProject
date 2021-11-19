@@ -50,6 +50,8 @@ class CollegeAdmission(models.Model):
     invoice_id = fields.Many2one('account.move', string='Invoice Id')
     paid_not = fields.Boolean(string='Paid or Not',
                               compute='_compute_payment_state')
+    currency_id = fields.Many2one('res.currency', string='Currency')
+    fee = fields.Monetary(related='course_id.fee', string='Course Fees')
 
     @api.depends('tran_certificate')
     def action_confirm(self):
@@ -110,7 +112,7 @@ class CollegeAdmission(models.Model):
             'invoice_date': datetime.today(),
             'state': 'draft',
             'invoice_line_ids': [
-                (0, 0, {'name': self.first_name, 'price_unit': 500.0})],
+                (0, 0, {'name': self.first_name, 'price_unit': self.fee})],
         })
         print(invoice)
         self.invoice_id = invoice

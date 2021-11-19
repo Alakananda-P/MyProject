@@ -28,6 +28,8 @@
                         <group>
                             <field name="duration_year"/>
                             <field name="no_semester"/>
+                            <field name="currency_id"/>
+                            <field name="fee"/>
                         </group>
                     </group>
                     <notebook>

@@ -15,9 +15,16 @@ class CollegeSemester(models.Model):
                                         'semester_id', string='Syllabus')
 
     # Name Format
-    @api.onchange('no_semester', 'course_id')
-    def _semester_name(self):
-        self.name = str(self.no_semester) + 'Sem: ' + str(self.course_id.name)
+    # @api.onchange('no_semester', 'course_id')
+    # def _semester_name(self):
+    #     self.name = str(self.no_semester) + 'Sem: ' + str(self.course_id.name)
+
+    def name_get(self):
+        result = []
+        for rec in self:
+            rec.name = str(rec.no_semester) + 'Sem: ' + str(rec.course_id.name)
+            result.append((rec.id, rec.name))
+        return result
 
 
 class SemesterSyllabusLines(models.Model):

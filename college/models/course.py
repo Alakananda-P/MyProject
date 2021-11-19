@@ -16,3 +16,5 @@ class CollegeCourse(models.Model):
     no_semester = fields.Integer(string='No of Semester')
     semester_ids = fields.One2many('college.semester', 'course_id',
                                    string='Semester')
+    currency_id = fields.Many2one('res.currency', string='Currency')
+    fee = fields.Monetary(string='Fees')
