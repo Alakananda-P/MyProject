@@ -4,9 +4,18 @@
             <field name="name">Student MarkSheet</field>
             <field name="model">student.marksheet.wizard</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">college.report_student_admission</field>
-            <field name="report_file">college.report_student_admission</field>
-            <field name="binding_model_id" ref="model_college_admission"/>
+            <field name="report_name">college.report_student_marksheet</field>
+            <field name="report_file">college.report_student_marksheet</field>
+            <field name="binding_model_id" ref="model_student_marksheet_wizard"/>
+            <field name="binding_type">report</field>
+    </record>
+        <record id="action_report_class_marksheet" model="ir.actions.report">
+            <field name="name">Student MarkSheet</field>
+            <field name="model">student.marksheet.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">college.report_class_marksheet</field>
+            <field name="report_file">college.report_class_marksheet</field>
+            <field name="binding_model_id" ref="model_student_marksheet_wizard"/>
             <field name="binding_type">report</field>
     </record>
 </odoo>

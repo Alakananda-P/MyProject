@@ -24,8 +24,9 @@
         'views/exam.xml',
         'views/student_class.xml',
         'views/mark_sheet.xml',
-        # 'report/student_admission_template.xml',
-        # 'report/report.xml'
+        'report/student_marksheet_template.xml',
+        'report/class_marksheet_template.xml',
+        'report/report.xml'
     ],
     'demo': [],
     'qweb': [],

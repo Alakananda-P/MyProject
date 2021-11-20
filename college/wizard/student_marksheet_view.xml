@@ -8,9 +8,9 @@
                     <group>
                         <field name="marklist" widget="radio"/>
                         <field name="student_id" attrs="{'invisible':[
-                                   ('marklist','!=','student')]}"/>
+                                   ('marklist','!=','student')],'required': [('marklist', '=', 'student')]}"/>
                         <field name="class_id" attrs="{'invisible':[
-                                   ('marklist','!=','class')]}"/>
+                                   ('marklist','!=','class')],'required': [('marklist', '=', 'class')]}"/>
                         <field name="semester_id"/>
                         <field name="exam_id"/>
                         <field name="exam_type_id"/>

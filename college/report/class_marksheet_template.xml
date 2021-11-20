@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_class_marksheet">
+        <t t-call="web.html_container">
+<!--            <t t-foreach="docs" t-as="o">-->
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="text-center">
+                        <t t-if="form.get('class_id')">
+                            <h1><strong><t t-esc="form['class_id'][1]"></t>: Mark List</strong></h1>
+                        </t>
+                        <h2><strong><t t-esc="form['class_course_id'][1]"></t> - <t t-esc="form['class_academic_year']"></t></strong></h2>
+                    </div>
+                </div>
+                <table>
+                    <tr>
+                        <td>Exam</td>
+                        <td>:</td>
+                        <td>
+                            <t t-if="form.get('exam_type_id')">
+                                <t t-esc="form['exam_type_id']"></t>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td>:</td>
+                        <td>
+<!--                            <t t-if="form.get('exam_id')">-->
+<!--                                <t t-esc="form['exam_id'][1]"></t>-->
+<!--                            </t>-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Pass</td>
+                        <td>:</td>
+                        <td>
+<!--                            <t t-if="form.get('exam_id')">-->
+<!--                                <t t-esc="form['exam_id'][1]"></t>-->
+<!--                            </t>-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fail</td>
+                        <td>:</td>
+                        <td>
+<!--                            <t t-if="form.get('exam_id')">-->
+<!--                                <t t-esc="form['exam_id'][1]"></t>-->
+<!--                            </t>-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ratio</td>
+                        <td>:</td>
+                        <td>
+<!--                            <t t-if="form.get('exam_id')">-->
+<!--                                <t t-esc="form['exam_id'][1]"></t>-->
+<!--                            </t>-->
+                        </td>
+                    </tr>
+                </table>
+            </t>
+        </t>
+    </template>
+</odoo>
