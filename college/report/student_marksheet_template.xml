@@ -103,4 +103,209 @@
             </t>
         </t>
     </template>
+
+    <template id="report_class_marksheet">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="text-center">
+                        <t t-if="form.get('class_id')">
+                            <h2>
+                                <strong><t t-esc="form['class_id'][1]"/>:
+                                    Mark List
+                                </strong>
+                            </h2>
+
+                            <h3>
+                                <strong>
+                                    <t t-esc="form['class_course_id'][1]"/>
+                                    -
+                                    <t t-esc="form['class_academic_year']"/>
+                                </strong>
+                            </h3>
+                        </t>
+                    </div>
+                    <br/>
+                    <table>
+                        <tr>
+                            <td>
+                                <h3>
+                                    <strong>Exam</strong>
+                                </h3>
+                            </td>
+                            <td>
+                                <h3>
+                                    <strong>:</strong>
+                                </h3>
+                            </td>
+                            <td>
+                                <t t-if="form.get('exam_type_id')">
+                                    <h3>
+                                        <strong>
+                                            <t t-esc="form['exam_type_id']"/>
+                                        </strong>
+                                    </h3>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h3>
+                                    <strong>Total</strong>
+                                </h3>
+                            </td>
+                            <td>
+                                <h3>
+                                    <strong>:</strong>
+                                </h3>
+                            </td>
+                            <td>
+                                <t t-if="form.get('exam_type_id')">
+                                    <h3>
+                                        <strong>
+
+                                            <t t-esc="form['exam_type_id']"/>
+                                        </strong>
+                                    </h3>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h3>
+                                    <strong>Pass</strong>
+                                </h3>
+                            </td>
+                            <td>
+                                <h3>
+                                    <strong>:</strong>
+                                </h3>
+                            </td>
+                            <td>
+                                <t t-if="form.get('exam_type_id')">
+                                    <h3>
+                                        <strong>
+
+                                            <t t-esc="form['exam_type_id']"/>
+                                        </strong>
+                                    </h3>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h3>
+                                    <strong>Fail</strong>
+                                </h3>
+                            </td>
+                            <td>
+                                <h3>
+                                    <strong>:</strong>
+                                </h3>
+                            </td>
+                            <td>
+                                <t t-if="form.get('exam_type_id')">
+                                    <h3>
+                                        <strong>
+
+                                            <t t-esc="form['exam_type_id']"/>
+                                        </strong>
+                                    </h3>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h3>
+                                    <strong>Ratio</strong>
+                                </h3>
+                            </td>
+                            <td>
+                                <h3>
+                                    <strong>:</strong>
+                                </h3>
+                            </td>
+                            <td>
+                                <t t-if="form.get('exam_type_id')">
+                                    <h3>
+                                        <strong>
+
+                                            <t t-esc="form['exam_type_id']"/>
+                                        </strong>
+                                    </h3>
+                                </t>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <table class="table table-bordered mt32">
+                        <thead>
+                            <tr>
+                                <th name="th_name" class="text-left">
+                                    <span>Student Name</span>
+                                </th>
+                                <t t-foreach="mark" t-as="line">
+                                    <th name="th_paper" class="text-left">
+                                        <span t-esc="line['subject']"/>
+                                    </th>
+                                </t>
+<!--                                <th name="th_obtained_mark" class="text-left">-->
+<!--                                    <span>Obtained Mark</span>-->
+<!--                                </th>-->
+<!--                                <th name="th_total_mark" class="text-left">-->
+<!--                                    <span>Total Mark</span>-->
+<!--                                </th>-->
+<!--                                <th name="th_pass_fail" class="text-left">-->
+<!--                                    <span>Pass / Failed</span>-->
+<!--                                </th>-->
+                            </tr>
+                        </thead>
+                        <t t-foreach="output" t-as="line">
+                            <!--                            <tbody>-->
+                            <tr>
+                                <td>
+                                    <span t-esc="line[0]['name']"/>
+                                </td>
+                                <t t-foreach="line[1]" t-as="line">
+                                    <td>
+                                        <span t-esc="list(line.values())[0]"/>
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                    </table>
+                    <table class="table table-bordered mt32">
+                        <thead>
+                            <tr>
+                                <th name="th_obtained_mark" class="text-left">
+                                    <span>Obtained Mark</span>
+                                </th>
+                                <th name="th_total_mark" class="text-left">
+                                    <span>Total Mark</span>
+                                </th>
+                                <th name="th_pass_fail" class="text-left">
+                                    <span>Pass / Failed</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="output" t-as="line">
+                            <tr>
+                                <td>
+
+                                        <span t-esc="line[0]['obtained_mark']"/>
+
+                                </td>
+
+<!--                                <td>-->
+<!--                                    <span t-esc="line[0]['obtained_mark']"/>-->
+<!--                                </td>-->
+                            </tr>
+                            <!--                            </tbody>-->
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
 </odoo>

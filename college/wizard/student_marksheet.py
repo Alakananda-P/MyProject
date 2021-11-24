@@ -67,40 +67,137 @@ class StudentMarksheetWizard(models.TransientModel):
             return self.env.ref('college.action_report_student_marksheet'
                                 ).report_action(self, data=data)
         elif self.marklist == 'class':
-            paper = self.semester_id.syllabus_line_ids
+            # domain = []
+            # domain_mark = []
+            # marksheets_name = []
+            # domain_names = []
+            # marksheets_id = []
+            # mark_id = []
+            # mark_name = []
+            # marksheet = self.env['college.marksheet'].search([
+            #     ('classes', '=', self.class_id.name),
+            #     ('semester', '=', self.semester_id.name),
+            #     ('exam', '=', self.exam_id.name)
+            # ])
+            # marks = marksheet.mark_line_ids
+            #
+            # for name in marksheet:
+            #     marksheets_id.append(name)
+            #     marksheets_name.append(name.name)
+            # print(marksheets_name)
+            # for name in marksheets_id:
+            #     domain_names += [
+            #         ('name', '=', name.name),
+            #         ('total_mark', '=', name.total_mark)
+            #     ]
+            #
+            # for mark in marks:
+            #     mark_id.append(mark)
+            #     mark_name.append(mark.mark)
+            # for mark in mark_id:
+            #     domain_mark += [('mark', '=', mark.mark)]
+            #
+            # if domain_names:
+            #     domain += (domain_names)
+            # if domain_mark:
+            #     domain += (domain_mark)
+            #
+            # subject_len = len(domain_mark)/len(marksheets_name)
+            #
+            # res = tuple(domain_mark[n:n+int(subject_len)] for n, i in enumerate(
+            #     domain_mark) if n % int(subject_len) == 0)
+            #
+            #
+            # result = tuple(
+            #     domain_names[n:n + 2] for n, i in enumerate(
+            #         domain_names) if n % 2 == 0)
+            #
+            # output = list(zip(result, res))
+            #
+            # for i in output:
+            #     print(i)
+            # # sub_len = 0
+            # j = 1
+            # for i in domain_mark:
+            #     print("I",i)
+            #     if j <= subject_len:
+            #         names.append(i)
+            #         j = j+1
+            #         print("J",j)
+            #     # if j <= sub_len
+            #     sub_len += subject_len
+            #     print(sub_len)
+            #     if j <= sub_len:
+            #         j = j + 1
+            #         print(j)
+            result = []
             marksheet = self.env['college.marksheet'].search([
                 ('classes', '=', self.class_id.name),
                 ('semester', '=', self.semester_id.name),
                 ('exam', '=', self.exam_id.name)
             ])
             marks = marksheet.mark_line_ids
-
-            line = []
-            papers = []
-            for name in marksheet:
+            for record in marksheet:
                 vals = {
-                    'id': name.id,
-                    'name': name.name,
-                    'total_mark': name.total_mark,
+                    'name': record.name,
+                    'obtained_mark': record.total_mark
                 }
-                line.append(vals)
-                for i in marks:
-                    # search_id = self.search([('id', '=', vals.get('id'))])
-                    # print(search_id)
-                    vals = {
-                        'subject': i.subject,
-                        'mark': i.mark
-                    }
-                    papers.append(vals)
-                    print(i.mark)
-            #     rank = {}
-            #     for values in line:
-            #         values.update({'mark': rec.mark})
-            #         # search_id = self.search([('id', '=', values.get('id'))])
-            #         # search_id.mark = values.mark
-            #     # line.append(vals)
-            #     print("Paper",
-            #           rank['mark'])
+                result.append(vals)
+            print("Result", result)
+            subject_len = len(self.semester_id.syllabus_line_ids)
+            mark = []
+            for record in marks:
+                vals = {
+                    record.subject: record.mark
+                }
+                mark.append(vals)
+            print("Mark",mark)
+
+            res = tuple(mark[n:n+int(subject_len)] for n, i in enumerate(
+                mark) if n % int(subject_len) == 0)
+
+            output = list(zip(result, res))
+            print(output)
+            # for line in output:
+                # print(line[0]['total_mark'])
+                # for i in line[1]:
+                #     print(list(i.values())[0])
+
+
+
+
+
+
+
+            # print(domain_names[2])
+
+            paper = self.semester_id.syllabus_line_ids
+            # marksheet = self.env['college.marksheet'].search([
+            #     ('classes', '=', self.class_id.name),
+            #     ('semester', '=', self.semester_id.name),
+            #     ('exam', '=', self.exam_id.name)
+            # ])
+            # marks = marksheet.mark_line_ids
+            # print(marksheet)
+            # line = []
+            # papers = []
+            # for name in marksheet:
+            #     vals = {
+            #         'id': name.id,
+            #         'name': name.name,
+            #         'total_mark': name.total_mark,
+            #
+            #     }
+            #     line.append(vals)
+            #
+            # for i in marks:
+            #     vals = {
+            #         'subject': i.subject,
+            #         'mark': i.mark
+            #     }
+            #     papers.append(vals)
+            # print(papers)
+            # print(line)
             values = []
             for record in paper:
                 vals = {
@@ -110,8 +207,9 @@ class StudentMarksheetWizard(models.TransientModel):
             data = {
                 'form': self.read()[0],
                 'mark': values,
-                'paper': papers,
-                'lines': line
+                # 'paper': papers,
+                # 'lines': line
+                'output': output
             }
             print(data)
             return self.env.ref('college.action_report_class_marksheet'

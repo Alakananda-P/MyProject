@@ -25,7 +25,6 @@
         'views/student_class.xml',
         'views/mark_sheet.xml',
         'report/student_marksheet_template.xml',
-        'report/class_marksheet_template.xml',
         'report/report.xml'
     ],
     'demo': [],
