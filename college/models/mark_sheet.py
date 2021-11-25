@@ -16,17 +16,29 @@ class CollegeMarksheet(models.Model):
     marksheet_id = fields.Many2one('college.exam', string='Exam')
     mark_line_ids = fields.One2many('marksheet.marks.lines',
                                     'mark_id', string='Marks')
-    total_mark = fields.Float(string='Total Mark', compute='_total_mark')
-    check_valuation_completed = fields.Boolean(string='Valuation Completed or Not')
+    total_mark = fields.Float(string='Total Mark',
+                              compute='_compute_total_mark', store=True)
+    total_max_mark = fields.Float(string='Total Max Mark',
+                                  compute='_compute_total_max_mark', store=True)
+    check_valuation_completed = fields.Boolean(
+        string='Valuation Completed or Not')
 
     # Calculate Total Mark
     @api.depends('mark_line_ids', 'mark_line_ids.mark')
-    def _total_mark(self):
+    def _compute_total_mark(self):
         for record in self:
             total = 0
             for line in record.mark_line_ids:
                 total += line.mark
             record['total_mark'] = total
+
+    @api.depends('mark_line_ids', 'mark_line_ids.max_mark')
+    def _compute_total_max_mark(self):
+        for record in self:
+            total = 0
+            for line in record.mark_line_ids:
+                total += line.max_mark
+            record['total_max_mark'] = total
 
     @api.onchange('mark_line_ids', 'mark_line_ids.mark')
     # Check Pass or Fail

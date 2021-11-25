@@ -65,10 +65,12 @@
                     </notebook>
                     <group name="note_group" col="6" class="mt-2 mt-md-0">
                         <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
-                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">
-                                <label for="total_mark"/>
-                            </div>
-                            <field name="total_mark" nolabel="1" class="oe_subtotal_footer_separator"/>
+<!--                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">-->
+<!--                                <label for="total_max_mark"/>-->
+<!--                            </div>-->
+                            <field name="total_mark"/>
+                            <field name="total_max_mark"/>
+<!--                            <field name="total_max_mark" nolabel="1" class="oe_subtotal_footer_separator"/>-->
                         </group>
                     </group>
                 </sheet>
