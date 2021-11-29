@@ -9,7 +9,10 @@
     'description': """College Management Software""",
     'website': '',
     'license': 'LGPL-3',
-    'depends': ['base', 'mail', 'account'],
+    'depends': ['base',
+                'mail',
+                'account',
+                'report_xlsx'],
     'data': [
         'security/ir.model.access.csv',
         'data/data.xml',

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="report_student_marksheet">
+    <template id="report_student_marksheet_pdf">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
                 <div class="page">
@@ -18,7 +18,7 @@
                                 <strong>
                                     <t t-esc="form['student_course_id']"/>
                                     -
-<!--                                    <t t-esc="form['student_academic_year']"/>-->
+                                    <!--                                    <t t-esc="form['student_academic_year']"/>-->
                                 </strong>
                             </h3>
                         </div>
@@ -120,7 +120,7 @@
                                     <strong>
                                         <t t-esc="form['class_course_id'][1]"/>
                                         -
-<!--                                        <t t-esc="form['class_academic_year']"/>-->
+                                        <!--                                        <t t-esc="form['class_academic_year']"/>-->
                                     </strong>
                                 </h3>
                             </t>
@@ -160,13 +160,13 @@
                                         <strong>:</strong>
                                     </h3>
                                 </td>
-<!--                                <td>-->
-<!--                                    <h3>-->
-<!--                                        <strong>-->
-<!--                                            <t t-esc="count[0]['total_student']"/>-->
-<!--                                        </strong>-->
-<!--                                    </h3>-->
-<!--                                </td>-->
+                                <!--                                <td>-->
+                                <!--                                    <h3>-->
+                                <!--                                        <strong>-->
+                                <!--                                            <t t-esc="count[0]['total_student']"/>-->
+                                <!--                                        </strong>-->
+                                <!--                                    </h3>-->
+                                <!--                                </td>-->
                             </tr>
                             <tr>
                                 <td>
@@ -179,13 +179,13 @@
                                         <strong>:</strong>
                                     </h3>
                                 </td>
-<!--                                <td>-->
-<!--                                    <h3>-->
-<!--                                        <strong>-->
-<!--                                            <t t-esc="count[0]['total_pass']"/>-->
-<!--                                        </strong>-->
-<!--                                    </h3>-->
-<!--                                </td>-->
+                                <!--                                <td>-->
+                                <!--                                    <h3>-->
+                                <!--                                        <strong>-->
+                                <!--                                            <t t-esc="count[0]['total_pass']"/>-->
+                                <!--                                        </strong>-->
+                                <!--                                    </h3>-->
+                                <!--                                </td>-->
                             </tr>
                             <tr>
                                 <td>
@@ -198,13 +198,13 @@
                                         <strong>:</strong>
                                     </h3>
                                 </td>
-<!--                                <td>-->
-<!--                                    <h3>-->
-<!--                                        <strong>-->
-<!--                                            <t t-esc="count[0]['total_failed']"/>-->
-<!--                                        </strong>-->
-<!--                                    </h3>-->
-<!--                                </td>-->
+                                <!--                                <td>-->
+                                <!--                                    <h3>-->
+                                <!--                                        <strong>-->
+                                <!--                                            <t t-esc="count[0]['total_failed']"/>-->
+                                <!--                                        </strong>-->
+                                <!--                                    </h3>-->
+                                <!--                                </td>-->
                             </tr>
                             <tr>
                                 <td>
@@ -217,13 +217,13 @@
                                         <strong>:</strong>
                                     </h3>
                                 </td>
-<!--                                <td>-->
-<!--                                    <h3>-->
-<!--                                        <strong>-->
-<!--                                            <t t-esc="count[0]['ratio']"/>-->
-<!--                                        </strong>-->
-<!--                                    </h3>-->
-<!--                                </td>-->
+                                <!--                                <td>-->
+                                <!--                                    <h3>-->
+                                <!--                                        <strong>-->
+                                <!--                                            <t t-esc="count[0]['ratio']"/>-->
+                                <!--                                        </strong>-->
+                                <!--                                    </h3>-->
+                                <!--                                </td>-->
                             </tr>
                         </table>
                         <br/>
@@ -233,11 +233,12 @@
                                     <th name="th_name" class="text-left">
                                         <span>Student Name</span>
                                     </th>
-<!--                                    <t t-foreach="classes" t-as="line">-->
-<!--                                        <th name="th_paper" class="text-left">-->
-<!--                                            <span t-esc="line['subject']"/>-->
-<!--                                        </th>-->
-<!--                                    </t>-->
+                                    <t t-foreach="subject_mark[0]"
+                                       t-as="subject">
+                                        <th name="th_paper" class="text-left">
+                                            <span t-esc="subject['subject']"/>
+                                        </th>
+                                    </t>
                                     <th name="th_obtained_mark"
                                         class="text-left">
                                         <span>Obtained Mark</span>
@@ -250,36 +251,33 @@
                                     </th>
                                 </tr>
                             </thead>
-
-                            <t t-foreach="student" t-as="line">
-<!--                                <t t-foreach="lists" t-as="line">-->
+                            <t t-foreach="subject_mark" t-as="line">
                                 <!--                            <t t-set="total_student" t-value="total_student + 1"/>-->
                                 <tr>
-<!--                                    <td>-->
-<!--                                        <span t-esc="line['student']"/>-->
-<!--                                    </td>-->
-<!--                                    <t t-foreach="line[1]" t-as="res">-->
-<!--                                        <td>-->
-<!--                                            <span t-esc="list(res.values())[0]"/>-->
-<!--                                        </td>-->
-<!--                                    </t>-->
-<!--                                    <td>-->
-<!--                                        <span t-esc="line[0]['obtained_mark']"/>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <span t-esc="line[0]['total_mark']"/>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <t t-if="line[0]['pass_fail'] == True">-->
-<!--                                            <span>Pass</span>-->
-<!--                                        </t>-->
-<!--                                        <t t-if="line[0]['pass_fail'] == False">-->
-<!--                                            <span>Failed</span>-->
-<!--                                        </t>-->
-<!--                                    </td>-->
+                                    <td>
+                                        <span t-esc="line[0]['student']"/>
+                                    </td>
+                                    <t t-foreach="line" t-as="mark">
+                                        <td>
+                                            <span t-esc="mark['mark']"/>
+                                        </td>
+                                    </t>
+                                    <td>
+                                        <span t-esc="line[0]['obtained_mark']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line[0]['total_mark']"/>
+                                    </td>
+                                    <td>
+                                        <t t-if="line[0]['pass_fail'] == True">
+                                            <span>Pass</span>
+                                        </t>
+                                        <t t-if="line[0]['pass_fail'] == False or line[0]['pass_fail'] == Null">
+                                            <span>Failed</span>
+                                        </t>
+                                    </td>
                                 </tr>
                             </t>
-<!--                            </t>-->
                         </table>
                     </t>
                 </div>

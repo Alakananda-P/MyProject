@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
 import math
+from itertools import groupby
 
 
 class StudentMarksheetWizard(models.TransientModel):
@@ -24,6 +25,8 @@ class StudentMarksheetWizard(models.TransientModel):
                                            string='Class Academic Year')
 
     def action_print_pdf(self):
+        subject_mark = []
+        result = []
         if self.marklist == 'student':
             args = {
                 'student_id': self.student_id.name,
@@ -50,30 +53,47 @@ class StudentMarksheetWizard(models.TransientModel):
                 'semester_id': self.semester_id.name,
                 'exam_id': self.exam_id.name
             }
-            self.env.cr.execute("""SELECT cm.name as student,
+            self.env.cr.execute("""SELECT 
+                                    cm.name as student,
                                     m.subject as subject,
-                                    m.mark as mark ,
+                                    m.mark as mark,                                 
                                     cm.total_mark as obtained_mark,
                                     cm.total_max_mark as total_mark,
-                                    m.pass_fail as pass_fail
+                                    cm.pass_fail as pass_fail
                                 FROM college_marksheet cm
-                                LEFT OUTER JOIN marksheet_marks_lines m ON(
-                                    cm.id = m.mark_id)
-                                LEFT OUTER JOIN marksheet_marks_lines m ON(
-                                    cm.id = m.mark_id)
+                                LEFT OUTER JOIN marksheet_marks_lines m 
+                                ON(cm.id = m.mark_id) 
                                 WHERE (cm.classes = %(class_id)s 
                                 AND cm.semester = %(semester_id)s 
                                 AND cm.exam = %(exam_id)s )""", args)
 
         student = self.env.cr.dictfetchall()
+        print(student)
+
+        # self.env.cr.execute("""SELECT
+        #                                 COUNT(ma.id) as total
+        #                                 FROM college_marksheet ma
+        #                                 WHERE (ma.classes = %(class_id)s
+        #                                 AND ma.semester = %(semester_id)s
+        #                                 AND ma.exam = %(exam_id)s )""", args)
+        # count = self.env.cr.dictfetchall()
+
+        def key_func(k):
+            return k['student']
+        info = sorted(student, key=key_func)
+        for key, value in groupby(info, key_func):
+            result.append(key)
+            subject_mark.append(list(value))
+
         data = {
             'form': self.read()[0],
             'student': student,
+            'result': result,
+            'subject_mark': subject_mark
         }
         print(data)
-        return self.env.ref('college.action_report_student_marksheet'
+        return self.env.ref('college.action_report_student_marksheet_pdf'
                             ).report_action(self, data=data)
-
 
         # student_pass_fail = []
         # count_detail = []
@@ -162,3 +182,6 @@ class StudentMarksheetWizard(models.TransientModel):
         # }
         # return self.env.ref('college.action_report_student_marksheet'
         #                     ).report_action(self, data=data)
+
+    def action_print_excel(self):
+        print("Hello Excel")
