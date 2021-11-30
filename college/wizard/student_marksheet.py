@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
-import math
+# import math
 from itertools import groupby
 
 
@@ -26,8 +26,8 @@ class StudentMarksheetWizard(models.TransientModel):
 
     def action_print_pdf(self):
         subject_mark = []
-        result = []
-        if self.marklist == 'student':
+        count_values = []
+        if self.marklist == 'student' and self.semester_id and self.exam_id:
             args = {
                 'student_id': self.student_id.name,
                 'semester_id': self.semester_id.name,
@@ -46,8 +46,40 @@ class StudentMarksheetWizard(models.TransientModel):
                                 WHERE (cm.name = %(student_id)s 
                                 AND cm.semester = %(semester_id)s 
                                 AND cm.exam = %(exam_id)s )""", args)
+        elif self.marklist == 'student' and self.semester_id:
+            args = {
+                'student_id': self.student_id.name,
+                'semester_id': self.semester_id.name
+            }
+            self.env.cr.execute("""SELECT cm.name as student,
+                                    cm.pass_fail as pass_fail,
+                                    cm.course as course,
+                                    m.subject as subject,
+                                    m.mark as mark,
+                                    m.pass_mark as passmark,
+                                    m.pass_fail as subject_pass_fail
+                                FROM college_marksheet cm
+                                LEFT OUTER JOIN marksheet_marks_lines m ON(
+                                    cm.id = m.mark_id)
+                                WHERE (cm.name = %(student_id)s 
+                                AND cm.semester = %(semester_id)s )""", args)
+        elif self.marklist == 'student':
+            args = {
+                'student_id': self.student_id.name
+            }
+            self.env.cr.execute("""SELECT cm.name as student,
+                                    cm.pass_fail as pass_fail,
+                                    cm.course as course,
+                                    m.subject as subject,
+                                    m.mark as mark,
+                                    m.pass_mark as passmark,
+                                    m.pass_fail as subject_pass_fail
+                                FROM college_marksheet cm
+                                LEFT OUTER JOIN marksheet_marks_lines m ON(
+                                    cm.id = m.mark_id)
+                                WHERE (cm.name = %(student_id)s)""", args)
 
-        elif self.marklist == 'class':
+        elif self.marklist == 'class' and self.semester_id and self.exam_id:
             args = {
                 'class_id': self.class_id.name,
                 'semester_id': self.semester_id.name,
@@ -67,87 +99,112 @@ class StudentMarksheetWizard(models.TransientModel):
                                 AND cm.semester = %(semester_id)s 
                                 AND cm.exam = %(exam_id)s )""", args)
 
-        student = self.env.cr.dictfetchall()
-        print(student)
+            student = self.env.cr.dictfetchall()
 
-        # self.env.cr.execute("""SELECT
-        #                                 COUNT(ma.id) as total
-        #                                 FROM college_marksheet ma
-        #                                 WHERE (ma.classes = %(class_id)s
-        #                                 AND ma.semester = %(semester_id)s
-        #                                 AND ma.exam = %(exam_id)s )""", args)
-        # count = self.env.cr.dictfetchall()
+            self.env.cr.execute("""SELECT
+                                    COUNT(cm.id) as total_student,
+                                    COUNT(CASE WHEN cm.pass_fail IS NULL or false THEN 1 END) as total_fail,
+                                    COUNT(cm.pass_fail = true) as total_pass,
+                                    ROUND((COUNT(NULLIF(cm.pass_fail,false))/COUNT(cm.id)::float)*100) as ratio
+                                    FROM college_marksheet cm
+                                    WHERE (cm.classes = %(class_id)s
+                                    AND cm.semester = %(semester_id)s
+                                    AND cm.exam = %(exam_id)s )""", args)
+            count = self.env.cr.dictfetchall()
+            count_values.append(count)
 
-        def key_func(k):
-            return k['student']
-        info = sorted(student, key=key_func)
-        for key, value in groupby(info, key_func):
-            result.append(key)
-            subject_mark.append(list(value))
+            def key_func(k):
+                return k['student']
+            info = sorted(student, key=key_func)
+            for key, value in groupby(info, key_func):
+                # result.append(key)
+                subject_mark.append(list(value))
 
+        elif self.marklist == 'class' and self.semester_id:
+            args = {
+                'class_id': self.class_id.name,
+                'semester_id': self.semester_id.name
+            }
+            self.env.cr.execute("""SELECT 
+                                    cm.name as student,
+                                    m.subject as subject,
+                                    m.mark as mark,                                 
+                                    cm.total_mark as obtained_mark,
+                                    cm.total_max_mark as total_mark,
+                                    cm.pass_fail as pass_fail
+                                FROM college_marksheet cm
+                                LEFT OUTER JOIN marksheet_marks_lines m 
+                                ON(cm.id = m.mark_id) 
+                                WHERE (cm.classes = %(class_id)s 
+                                AND cm.semester = %(semester_id)s )""", args)
+
+            student = self.env.cr.dictfetchall()
+
+            self.env.cr.execute("""SELECT
+                                    COUNT(cm.id) as total_student,
+                                    COUNT(CASE WHEN cm.pass_fail IS NULL or false THEN 1 END) as total_fail,
+                                    COUNT(cm.pass_fail = true) as total_pass,
+                                    ROUND((COUNT(NULLIF(cm.pass_fail,false))/COUNT(cm.id)::float)*100) as ratio
+                                    FROM college_marksheet cm
+                                    WHERE (cm.classes = %(class_id)s
+                                    AND cm.semester = %(semester_id)s)""", args)
+            count = self.env.cr.dictfetchall()
+            count_values.append(count)
+
+            def key_func(k):
+                return k['student']
+
+            info = sorted(student, key=key_func)
+            for key, value in groupby(info, key_func):
+                # result.append(key)
+                subject_mark.append(list(value))
+
+        elif self.marklist == 'class':
+            args = {
+                'class_id': self.class_id.name
+            }
+            self.env.cr.execute("""SELECT 
+                                    cm.name as student,
+                                    m.subject as subject,
+                                    m.mark as mark,                                 
+                                    cm.total_mark as obtained_mark,
+                                    cm.total_max_mark as total_mark,
+                                    cm.pass_fail as pass_fail
+                                FROM college_marksheet cm
+                                LEFT OUTER JOIN marksheet_marks_lines m 
+                                ON(cm.id = m.mark_id) 
+                                WHERE (cm.classes = %(class_id)s )""", args)
+
+            student = self.env.cr.dictfetchall()
+
+            self.env.cr.execute("""SELECT
+                                    COUNT(cm.id) as total_student,
+                                    COUNT(CASE WHEN cm.pass_fail IS NULL or false THEN 1 END) as total_fail,
+                                    COUNT(cm.pass_fail = true) as total_pass,
+                                    ROUND((COUNT(NULLIF(cm.pass_fail,false))/COUNT(cm.id)::float)*100) as ratio
+                                    FROM college_marksheet cm
+                                    WHERE (cm.classes = %(class_id)s)""", args)
+            count = self.env.cr.dictfetchall()
+            count_values.append(count)
+
+            def key_func(k):
+                return k['student']
+
+            info = sorted(student, key=key_func)
+            for key, value in groupby(info, key_func):
+                # result.append(key)
+                subject_mark.append(list(value))
+
+        result = self.env.cr.dictfetchall()
         data = {
             'form': self.read()[0],
-            'student': student,
-            'result': result,
-            'subject_mark': subject_mark
+            'count': count_values,
+            'subject_mark': subject_mark,
+            'student': result,
         }
-        print(data)
         return self.env.ref('college.action_report_student_marksheet_pdf'
                             ).report_action(self, data=data)
 
-        # student_pass_fail = []
-        # count_detail = []
-        # student_detail = []
-        # class_detail = []
-        # subject = []
-        # if self.marklist == 'student':
-        #     marksheet = self.env['college.marksheet'].search([
-        #         ('name', '=', self.student_id.name),
-        #         ('semester', '=', self.semester_id.name),
-        #         ('exam', '=', self.exam_id.name)
-        #     ])
-        #     pass_fail = marksheet.pass_fail
-        #     marks = marksheet.mark_line_ids
-        #     for record in marks:
-        #         vals = {
-        #             'subject': record.subject,
-        #             'mark': record.mark,
-        #             'pass_mark': record.pass_mark,
-        #             'pass_fail': record.pass_fail
-        #         }
-        #         student_detail.append(vals)
-        #     student_pass_fail.append({'student_pass_fail': pass_fail})
-        #
-        # elif self.marklist == 'class':
-        #     marksheet = self.env['college.marksheet'].search([
-        #         ('classes', '=', self.class_id.name),
-        #         ('semester', '=', self.semester_id.name),
-        #         ('exam', '=', self.exam_id.name)
-        #     ])
-        #     line_detail = []
-        #     for record in marksheet:
-        #         vals = {
-        #             'name': record.name,
-        #             'obtained_mark': record.total_mark,
-        #             'total_mark': record.total_max_mark,
-        #             'pass_fail': record.pass_fail
-        #         }
-        #         line_detail.append(vals)
-        #
-        #     subject_marks = []
-        #     marks = marksheet.mark_line_ids
-        #     for record in marks:
-        #         vals = {
-        #             record.subject: record.mark
-        #         }
-        #         subject_marks.append(vals)
-        #
-        #     subject_len = len(self.semester_id.syllabus_line_ids)
-        #     res = tuple(subject_marks[n:n+int(subject_len)] for n, i in
-        #                 enumerate(subject_marks) if n % int(subject_len) == 0)
-        #     output = list(zip(line_detail, res))
-        #     class_detail.append(output)
-        #
         #     pass_count = 0
         #     fail_count = 0
         #     for line in output:
@@ -158,30 +215,63 @@ class StudentMarksheetWizard(models.TransientModel):
         #     div = math.gcd(pass_count, fail_count)
         #     ratio = str(int(pass_count / div)) + ':' + str(int(
         #         fail_count / div))
-        #     count = {
-        #         'total_student': len(marksheet),
-        #         'total_pass': pass_count,
-        #         'total_failed': fail_count,
-        #         'ratio': ratio
-        #     }
-        #     count_detail.append(count)
-        #     paper = self.semester_id.syllabus_line_ids
-        #     for record in paper:
-        #         vals = {
-        #             'subject': record.subject,
-        #         }
-        #         subject.append(vals)
-        #
-        # data = {
-        #     'form': self.read()[0],
-        #     'subject': subject,
-        #     'class_detail': class_detail,
-        #     'count': count_detail,
-        #     'student_detail': student_detail,
-        #     'student_pass_fail': student_pass_fail
-        # }
-        # return self.env.ref('college.action_report_student_marksheet'
-        #                     ).report_action(self, data=data)
-
     def action_print_excel(self):
-        print("Hello Excel")
+        if self.marklist == 'student' and self.semester_id and self.exam_id:
+            args = {
+                'student_id': self.student_id.name,
+                'semester_id': self.semester_id.name,
+                'exam_id': self.exam_id.name
+            }
+            self.env.cr.execute("""SELECT cm.name as student,
+                                    cm.pass_fail as pass_fail,
+                                    cm.course as course,
+                                    m.subject as subject,
+                                    m.mark as mark,
+                                    m.pass_mark as passmark,
+                                    m.pass_fail as subject_pass_fail
+                                FROM college_marksheet cm
+                                LEFT OUTER JOIN marksheet_marks_lines m ON(
+                                    cm.id = m.mark_id)
+                                WHERE (cm.name = %(student_id)s 
+                                AND cm.semester = %(semester_id)s 
+                                AND cm.exam = %(exam_id)s )""", args)
+        elif self.marklist == 'student' and self.semester_id:
+            args = {
+                'student_id': self.student_id.name,
+                'semester_id': self.semester_id.name
+            }
+            self.env.cr.execute("""SELECT cm.name as student,
+                                    cm.pass_fail as pass_fail,
+                                    cm.course as course,
+                                    m.subject as subject,
+                                    m.mark as mark,
+                                    m.pass_mark as passmark,
+                                    m.pass_fail as subject_pass_fail
+                                FROM college_marksheet cm
+                                LEFT OUTER JOIN marksheet_marks_lines m ON(
+                                    cm.id = m.mark_id)
+                                WHERE (cm.name = %(student_id)s 
+                                AND cm.semester = %(semester_id)s )""", args)
+        elif self.marklist == 'student':
+            args = {
+                'student_id': self.student_id.name
+            }
+            self.env.cr.execute("""SELECT cm.name as student,
+                                    cm.pass_fail as pass_fail,
+                                    cm.course as course,
+                                    m.subject as subject,
+                                    m.mark as mark,
+                                    m.pass_mark as passmark,
+                                    m.pass_fail as subject_pass_fail
+                                FROM college_marksheet cm
+                                LEFT OUTER JOIN marksheet_marks_lines m ON(
+                                    cm.id = m.mark_id)
+                                WHERE (cm.name = %(student_id)s)""", args)
+
+        student = self.env.cr.dictfetchall()
+        data = {
+            'form': self.read()[0],
+            'student': student
+        }
+        return self.env.ref('college.action_report_student_marksheet_xlsx'
+                            ).report_action(self, data=data)

@@ -18,7 +18,7 @@
                                 <strong>
                                     <t t-esc="form['student_course_id']"/>
                                     -
-                                    <!--                                    <t t-esc="form['student_academic_year']"/>-->
+                                    <t t-esc="form['student_academic_year']"/>
                                 </strong>
                             </h3>
                         </div>
@@ -120,7 +120,7 @@
                                     <strong>
                                         <t t-esc="form['class_course_id'][1]"/>
                                         -
-                                        <!--                                        <t t-esc="form['class_academic_year']"/>-->
+                                        <t t-esc="form['class_academic_year']"/>
                                     </strong>
                                 </h3>
                             </t>
@@ -160,13 +160,13 @@
                                         <strong>:</strong>
                                     </h3>
                                 </td>
-                                <!--                                <td>-->
-                                <!--                                    <h3>-->
-                                <!--                                        <strong>-->
-                                <!--                                            <t t-esc="count[0]['total_student']"/>-->
-                                <!--                                        </strong>-->
-                                <!--                                    </h3>-->
-                                <!--                                </td>-->
+                                <td>
+                                    <h3>
+                                        <strong>
+                                            <t t-esc="count[0][0]['total_student']"/>
+                                        </strong>
+                                    </h3>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -179,13 +179,13 @@
                                         <strong>:</strong>
                                     </h3>
                                 </td>
-                                <!--                                <td>-->
-                                <!--                                    <h3>-->
-                                <!--                                        <strong>-->
-                                <!--                                            <t t-esc="count[0]['total_pass']"/>-->
-                                <!--                                        </strong>-->
-                                <!--                                    </h3>-->
-                                <!--                                </td>-->
+                                <td>
+                                    <h3>
+                                        <strong>
+                                            <t t-esc="count[0][0]['total_pass']"/>
+                                        </strong>
+                                    </h3>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -198,13 +198,13 @@
                                         <strong>:</strong>
                                     </h3>
                                 </td>
-                                <!--                                <td>-->
-                                <!--                                    <h3>-->
-                                <!--                                        <strong>-->
-                                <!--                                            <t t-esc="count[0]['total_failed']"/>-->
-                                <!--                                        </strong>-->
-                                <!--                                    </h3>-->
-                                <!--                                </td>-->
+                                <td>
+                                    <h3>
+                                        <strong>
+                                            <t t-esc="count[0][0]['total_fail']"/>
+                                        </strong>
+                                    </h3>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -217,13 +217,14 @@
                                         <strong>:</strong>
                                     </h3>
                                 </td>
-                                <!--                                <td>-->
-                                <!--                                    <h3>-->
-                                <!--                                        <strong>-->
-                                <!--                                            <t t-esc="count[0]['ratio']"/>-->
-                                <!--                                        </strong>-->
-                                <!--                                    </h3>-->
-                                <!--                                </td>-->
+                                <td>
+                                    <h3>
+                                        <strong>
+                                            <t t-esc="count[0][0]['ratio']"/>
+                                            %
+                                        </strong>
+                                    </h3>
+                                </td>
                             </tr>
                         </table>
                         <br/>
