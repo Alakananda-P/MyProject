@@ -97,7 +97,7 @@
                                         <t t-if="line['subject_pass_fail'] == True">
                                             <span>Pass</span>
                                         </t>
-                                        <t t-if="line['subject_pass_fail'] == False">
+                                        <t t-if="line['subject_pass_fail'] == False or line['subject_pass_fail'] == Null">
                                             <span>Fail</span>
                                         </t>
                                     </td>

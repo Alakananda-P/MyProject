@@ -20,11 +20,3 @@
             <field name="binding_type">report</field>
     </record>
 </odoo>
-
-<!--COUNT(cm.id) as total_student,-->
-<!--                                COUNT(NULLIF(m.pass_fail,true)) as total_fail,-->
-<!--                                COUNT(NULLIF(m.pass_fail,false)) as total_pass,-->
-<!--                                ROW_NUMBER() OVER(PARTITION BY cm.name) as total-->
-
-<!--GROUP BY cm.name,m.subject,m.mark,cm.total_mark,-->
-<!--                                    cm.total_max_mark,cm.pass_fail-->
