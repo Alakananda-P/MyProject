@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_limit_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.limit.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="barcode" position="after">
+                <field name="activate_purchase_limit"/>
+                <field name="purchase_limit" attrs="{'invisible': [(
+                'activate_purchase_limit', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
