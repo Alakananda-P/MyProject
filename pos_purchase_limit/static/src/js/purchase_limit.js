@@ -1,29 +1,42 @@
 odoo.define('pos_purchase_limit.purchase_limit', function (require) {
     "use strict";
     var models = require('point_of_sale.models');
-    var n = models.load_fields('res.partner','purchase_limit');
+    models.load_fields('res.partner','purchase_limit');
     var PosComponent = require('point_of_sale.PosComponent');
+    var ActionpadWidget = require('point_of_sale.ActionpadWidget');
     var Registries = require('point_of_sale.Registries');
     var core = require('web.core');
     var _t = core._t;
-    console.log("Models",models);
-    console.log("N", n);
-    console.log("Screens",PosComponent);
+    const { useListener } = require('web.custom_hooks');
+    const { Gui } = require('point_of_sale.Gui');
 
-    var PurchaseLimit = PosComponent => class extends PosComponent {
-        constructor(){
-        super(this);
+    const PurchaseLimit = (ActionpadWidget) =>
+        class extends ActionpadWidget {
+            constructor() {
+                super(...arguments);
+                useListener('click-pay', this.onClick);
+            }
+            async onClick() {
+                var self = this;
+                var client = self.env.pos.get_client();
+                var order = self.env.pos.get_order();
+                var order_subtotal = order.get_subtotal();
+                if (!client){
+                    Gui.showPopup('ErrorPopup', {
+                        'title': _t('Select a Customer'),
+                        'body': _t('If no customer is selected, Please select a customer'),
+                    });
+                }
+                if (client){
+                    if(order_subtotal > client.purchase_limit){
+                        Gui.showPopup('ErrorPopup', {
+                            'title': _t('Exceeds Purchase Limit'),
+                            'body': _t(' Purchase Limit Amount is ' + client.purchase_limit),
+                        });
+                    }
+                }
+            }
         }
-        onClick(){
-            console.log("Hello");
-        }
-
-    };
-//    ActionpadWidget.template = 'ActionpadWidget';
-    Registries.Component.extend(PosComponent, PurchaseLimit);
-    return PurchaseLimit;
+    Registries.Component.extend(ActionpadWidget, PurchaseLimit);
+    return PurchaseLimit
 });
-
-//odoo.define('point_of_sale.ActionpadWidget',function(require){'use strict';const PosComponent=require('point_of_sale.PosComponent');const Registries=require('point_of_sale.Registries');class ActionpadWidget extends PosComponent{get isLongName(){return this.client&&this.client.name.length>10;}
-//get client(){return this.props.client;}}
-//ActionpadWidget.template='ActionpadWidget';Registries.Component.add(ActionpadWidget);return ActionpadWidget;});;
