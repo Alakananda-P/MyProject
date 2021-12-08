@@ -1,24 +1,20 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
-    'name': 'POS Purchase Limit',
+    'name': 'Website Buy Now',
     'version': '14.0.1.0.0',
-    'summary': 'POS Purchase Limit Software',
+    'summary': 'Website Buy Now Software',
     'sequence': -100,
     'category': 'Hidden',
-    'description': """POS Purchase Limit Software""",
+    'description': """Website Buy Now on Shop Software""",
     'website': '',
     'license': 'LGPL-3',
     'depends': [
-        'point_of_sale',
-        'product',
-        'contacts',
         'base',
-        'web',
+        'website_sale',
     ],
     'data': [
-        'views/purchase_limit.xml',
-        'views/assets.xml',
+        'views/templates.xml',
     ],
     'demo': [],
     'qweb': [],

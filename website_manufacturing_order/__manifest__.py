@@ -1,24 +1,22 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
-    'name': 'POS Purchase Limit',
+    'name': 'Website Manufacturing Order',
     'version': '14.0.1.0.0',
-    'summary': 'POS Purchase Limit Software',
+    'summary': 'Website Manufacturing Order Software',
     'sequence': -100,
     'category': 'Hidden',
-    'description': """POS Purchase Limit Software""",
+    'description': """Website Manufacturing Order Software""",
     'website': '',
     'license': 'LGPL-3',
     'depends': [
-        'point_of_sale',
-        'product',
+        'portal',
+        'mrp',
         'contacts',
-        'base',
-        'web',
     ],
     'data': [
-        'views/purchase_limit.xml',
-        'views/assets.xml',
+        'views/portal_template.xml',
+        'views/mo_customer.xml',
     ],
     'demo': [],
     'qweb': [],
