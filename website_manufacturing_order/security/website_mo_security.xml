@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="portal_manufacturing_order_user_rule" model="ir.rule">
+            <field name="name">Portal manufacturing Orders</field>
+            <field name="model_id" ref="website_manufacturing_order.model_mrp_production"/>
+            <field name="domain_force">['|',
+                ('message_partner_ids','child_of',[user.commercial_partner_id.id]),('partner_id',
+                'child_of', [user.commercial_partner_id.id])]
+            </field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="0"/>
+        </record>
+        <record id="portal_manufacturing_product_template" model="ir.rule">
+            <field name="name">Portal manufacturing Orders</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="0"/>
+        </record>
+        <record id="portal_manufacturing_product_user_rule" model="ir.rule">
+            <field name="name">Portal manufacturing products</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="0"/>
+        </record>
+
+    </data>
+</odoo>

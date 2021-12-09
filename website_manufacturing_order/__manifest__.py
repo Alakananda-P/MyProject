@@ -13,8 +13,13 @@
         'portal',
         'mrp',
         'contacts',
+        'base',
+        'product',
+        # 'mrp_portal',
     ],
     'data': [
+        'security/ir.model.access.csv',
+        'security/website_mo_security.xml',
         'views/portal_template.xml',
         'views/mo_customer.xml',
     ],
