@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="stock_availability" inherit_id="website_sale.products_item">
+        <xpath expr="//div[hasclass('o_wsale_product_btn')]" position="inside">
+            <div class="badge badge-danger" t-if="product.qty_available == 0">
+                Out of Stock
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('product_price')]" position="inside">
+            <div class="text-warning"
+                 t-if="product.qty_available &lt; 5 and product.qty_available != 0">
+                If only left less than 5 quantity on the stock!!!
+            </div>
+        </xpath>
+    </template>
+
+    <template id="stock_availability_add_to_cart"
+              inherit_id="website_sale.product">
+        <xpath expr="//a[@id='add_to_cart']" position="replace">
+            <t t-if="product.qty_available == 0">
+            </t>
+            <t t-if="product.qty_available &gt; 0">
+                <a role="button" id="add_to_cart"
+                   class="btn btn-primary btn-lg mt16 js_check_product a-submit d-block d-sm-inline-block"
+                   href="#">
+                    <i class="fa fa-shopping-cart"/>
+                    Add to Cart
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="stock_availability_buy_now"
+              inherit_id="website_sale.product_buy_now">
+        <xpath expr="//a[@id='buy_now']" position="replace">
+            <t t-if="product.qty_available == 0">
+                <br/>
+                <span class="badge badge-danger">Out of Stock</span>
+            </t>
+            <t t-if="product.qty_available &gt; 0">
+                <a role="button" id="buy_now"
+                   class="btn btn-outline-primary btn-lg mt16 d-block d-sm-inline-block"
+                   href="#">
+                    <i class="fa fa-bolt"/>
+                    Buy Now
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="stock_availability_add_to_cart_products"
+              inherit_id="website_sale.products_add_to_cart">
+        <xpath expr="//t[@t-set='product_variant_id']" position="replace">
+            <t t-if="product.qty_available == 0">
+                <a href="#" role="button" style="visibility:hidden;"
+                   class="btn btn-secondary a-submit"
+                   aria-label="Shopping cart" title="Shopping cart">
+                    <span class="fa fa-shopping-cart"/>
+                </a>
+            </t>
+            <t t-if="product.qty_available &gt; 0">
+                <a href="#" role="button" class="btn btn-secondary a-submit"
+                   aria-label="Shopping cart" title="Shopping cart">
+                    <span class="fa fa-shopping-cart"/>
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="stock_availability_buy_now_products"
+              inherit_id="website_buy_now.products_buy_now">
+        <xpath expr="//a[@id='buy_now']" position="replace">
+            <t t-if="product.qty_available == 0">
+                <a href="#" role="button" id="buy_now"
+                   style="visibility:hidden;" class="btn btn-secondary"
+                   aria-label="Buy Now" title="Buy Now">
+                    <span class="fa fa-shopping-cart"/>
+                </a>
+            </t>
+            <t t-if="product.qty_available &gt; 0">
+                <a href="#" role="button" id="buy_now" class="btn btn-secondary"
+                   aria-label="Buy Now" title="Buy Now">
+                    <span class="fa fa-shopping-cart"/>
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

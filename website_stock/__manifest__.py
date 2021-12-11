@@ -1,24 +1,19 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
-    'name': 'Website Manufacturing Order',
+    'name': 'Website Stock',
     'version': '14.0.1.0.0',
-    'summary': 'Website Manufacturing Order Software',
+    'summary': 'Website Stock Availablility Software',
     'sequence': -100,
     'category': 'Hidden',
-    'description': """Website Manufacturing Order Software""",
+    'description': """Website Stock Availablility Software""",
     'website': '',
     'license': 'LGPL-3',
     'depends': [
-        'portal',
-        'mrp',
-        'contacts',
-        'base',
-        'product',
+        'website_sale',
     ],
     'data': [
-        'views/portal_template.xml',
-        'views/mo_customer.xml',
+        'views/stock_availability.xml',
     ],
     'demo': [],
     'qweb': [],
