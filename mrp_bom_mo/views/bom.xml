@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_mrp_bom" model="ir.actions.client">
+        <field name="name">BoM Structure &amp; Cost</field>
+        <field name="tag">mrp_bom_report</field>
+        <field name="context"
+               eval="{'model': 'report.mrp.report_bom_structure'}"/>
+    </record>
+
+    <record id="bom_form" model="ir.ui.view">
+        <field name="name">base.form.inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <button class="oe_stat_button" position="after">
+                <button name="%(action_report_mrp_bom)d" type="action"
+                        class="oe_stat_button" icon="fa-bars" attrs="{'invisible': [('state', 'not in', ('progress', 'done'))]}"
+                        string="Structure &amp; Cost"/>
+            </button>
+        </field>
+    </record>
+
+</odoo>
