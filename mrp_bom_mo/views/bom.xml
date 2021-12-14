@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="action_report_mrp_bom" model="ir.actions.client">
-        <field name="name">BoM Structure &amp; Cost</field>
+        <field name="name">BoM Structure</field>
         <field name="tag">mrp_bom_report</field>
         <field name="context"
                eval="{'model': 'report.mrp.report_bom_structure'}"/>
@@ -13,11 +13,12 @@
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
-            <button class="oe_stat_button" position="after">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <button name="%(action_report_mrp_bom)d" type="action"
-                        class="oe_stat_button" icon="fa-bars" attrs="{'invisible': [('state', 'not in', ('progress', 'done'))]}"
+                        class="oe_stat_button" icon="fa-bars"
+                        attrs="{'invisible': [('bom_id', '=', False)]}"
                         string="Structure &amp; Cost"/>
-            </button>
+            </xpath>
         </field>
     </record>
 

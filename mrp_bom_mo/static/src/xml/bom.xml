@@ -1,0 +1,11 @@
+<templates id="template" xml:space="preserve">
+    <t t-name="mrp.report_bom_search" t-inherit="mrp.report_bom_search"
+       t-inherit-mode="extension" owl="1">
+        <xpath expr="//select[hasclass('o_mrp_bom_report_type')]" position="replace">
+            <select class="o_input o_mrp_bom_report_type">
+                <option t-att-data-type="'bom_structure'">BoM Structure</option>
+                <option t-att-data-type="'all'">BoM Structure &amp; Cost</option>
+            </select>
+        </xpath>
+    </t>
+</templates>

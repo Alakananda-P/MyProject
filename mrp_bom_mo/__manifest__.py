@@ -17,7 +17,9 @@
         'views/bom.xml',
     ],
     'demo': [],
-    'qweb': [],
+    'qweb': [
+        'static/src/xml/bom.xml',
+    ],
     'installable': True,
     'application': True,
     'auto_install': False,
